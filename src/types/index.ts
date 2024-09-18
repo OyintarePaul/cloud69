@@ -13,7 +13,7 @@ export type Folder = {
 
 export type File = {
   type: "file";
-  ref: string;
+  path: string;
   size: number;
   mimeType: string;
 } & Resource;

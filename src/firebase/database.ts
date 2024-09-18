@@ -6,9 +6,11 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
-import { auth, db } from "./init";
+import { auth, db, storage } from "./init";
 
-import { Folder } from "@/types";
+import { File as FileType, Folder } from "@/types";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { randomID } from "@/lib/utils";
 
 export const createFolder = async (name: string, parent: string) => {
   const payload: Folder = {
@@ -23,7 +25,14 @@ export const createFolder = async (name: string, parent: string) => {
 };
 
 export const uploadFile = (file: File) => {
-  console.log(file);
+  const path = `files/${randomID()}`;
+  const storageRef = ref(storage, path);
+  return uploadBytesResumable(storageRef, file);
+};
+
+export const createFile = async (payload: FileType) => {
+  const snapshot = await addDoc(collection(db, "resources"), payload);
+  return snapshot;
 };
 
 export const getChildren = async (parentID?: string) => {

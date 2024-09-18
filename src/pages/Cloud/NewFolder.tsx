@@ -25,6 +25,7 @@ const NewFolder = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["resources", id] });
       setIsOpen(false);
+      setName("New Folder");
     },
   });
 
@@ -37,7 +38,7 @@ const NewFolder = () => {
       <Button variant="outline" onClick={() => setIsOpen(true)}>
         New Folder
       </Button>
-      <Dialog open={isOpen}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>New Folder</DialogTitle>
