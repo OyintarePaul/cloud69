@@ -4,14 +4,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Folder as FolderType } from "@/types";
+import { Folder } from "@/types";
 import { FolderClosed } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type IProps = {
-  folder: FolderType;
+  folder: Folder;
 };
-const Folder = ({ folder }: IProps) => {
+const FolderCard = ({ folder }: IProps) => {
   return (
     <Link to={`/dashboard/cloud/${folder.id}`}>
       <Card>
@@ -25,4 +25,4 @@ const Folder = ({ folder }: IProps) => {
   );
 };
 
-export default Folder;
+export default FolderCard;

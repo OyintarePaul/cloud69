@@ -1,4 +1,4 @@
-import { createFile, uploadFile } from "@/firebase/database";
+import { createFile, uploadFile } from "@/firebase/services";
 import { auth } from "@/firebase/init";
 import { DocumentReference, serverTimestamp } from "firebase/firestore";
 import { TaskState, UploadTask } from "firebase/storage";
@@ -21,6 +21,7 @@ export const useUpload = (
   const { id } = useParams();
 
   const upload = useCallback(() => {
+    setUploadState("running");
     setUploadTask(uploadFile(file));
   }, [file]);
 
@@ -38,10 +39,12 @@ export const useUpload = (
     })
       .then((snapshot) => {
         if (onSuccess) onSuccess(snapshot);
+        setUploadState("success");
       })
       .catch((e) => {
-        setError(e);
         if (onError) onError(e);
+        setUploadState("error");
+        setError(e);
       });
   };
 
@@ -51,10 +54,10 @@ export const useUpload = (
         "state_changed",
         (snapshot) => {
           setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
-          setUploadState(snapshot.state);
         },
         (error) => {
           setError(error);
+          setUploadState("error");
           if (onError) onError(error);
         },
         () => handleSuccess(uploadTask)
@@ -65,18 +68,21 @@ export const useUpload = (
   const pause = () => {
     if (uploadTask && uploadState == "running") {
       uploadTask.pause();
+      setUploadState("paused");
     }
   };
 
   const resume = () => {
     if (uploadTask && uploadState == "paused") {
       uploadTask.resume();
+      setUploadState("running");
     }
   };
 
   const cancel = () => {
     if (uploadTask && (uploadState == "running" || uploadState == "paused")) {
       uploadTask.cancel();
+      setUploadState("canceled");
     }
   };
 

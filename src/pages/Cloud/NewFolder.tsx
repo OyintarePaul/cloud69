@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createFolder } from "@/firebase/database";
+import { createFolder } from "@/firebase/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -24,10 +24,14 @@ const NewFolder = () => {
     mutationFn: () => createFolder(name, id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["resources", id] });
-      setIsOpen(false);
-      setName("New Folder");
+      handleModalClose();
     },
   });
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+    setName("New Folder");
+  };
 
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
@@ -38,7 +42,7 @@ const NewFolder = () => {
       <Button variant="outline" onClick={() => setIsOpen(true)}>
         New Folder
       </Button>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={handleModalClose}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>New Folder</DialogTitle>

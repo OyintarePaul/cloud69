@@ -1,26 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useUpload } from "@/hooks/useUpload";
-import { CircleX, Loader2 } from "lucide-react";
+import { CircleCheck, CircleX, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 
 type IProps = {
   file: File;
+  onSuccess?: () => void;
 };
-const UploadState = ({ file }: IProps) => {
+const UploadState = ({ file, onSuccess }: IProps) => {
   const { upload, progress, uploadState } = useUpload(file, {
-    onSuccess: (snapshot) => console.log(snapshot),
     onError: (e) => console.log(e),
+    onSuccess: () => {
+      if (onSuccess) onSuccess();
+    },
   });
 
   useEffect(() => {
     upload();
   }, []);
-
-  useEffect(() => {
-    console.log(progress);
-    console.log(uploadState);
-  }, [progress, uploadState]);
 
   return (
     <div>
@@ -35,11 +33,17 @@ const UploadState = ({ file }: IProps) => {
         </p>
         <span>
           <Button size="icon" variant="ghost">
-            <CircleX className="text-destructive size-4" />
+            {uploadState == "success" ? (
+              <CircleCheck className="size-4 text-primary" />
+            ) : (
+              <CircleX className="size-4 text-destructive" />
+            )}
           </Button>
         </span>
       </div>
-      <Progress value={progress * 100} className="w-full h-1" />
+      {uploadState !== "success" && (
+        <Progress value={progress * 100} className="w-full h-1" />
+      )}
     </div>
   );
 };

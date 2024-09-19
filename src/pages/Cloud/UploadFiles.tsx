@@ -9,26 +9,38 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Upload } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadState from "./UploadState";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const UploadFiles = () => {
-  const [files, setFiles] = useState<File[]>();
+  const [files, setFiles] = useState<File[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [completedUploads, setCompletedUploads] = useState(0);
+  const queryClient = useQueryClient();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (completedUploads > 0 && completedUploads == files.length) {
+      queryClient.invalidateQueries({ queryKey: ["resources", id] });
+      handleModalClose();
+    }
+  }, [completedUploads, files, queryClient, id]);
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+    setFiles([]);
+  };
+
   return (
     <>
       <Button className="space-x-2" onClick={() => setIsOpen(true)}>
         <Upload className="size-4" />
         <span>Upload File</span>
       </Button>
-      <Dialog
-        open={isOpen}
-        onOpenChange={(open) => {
-          setIsOpen(open);
-          setFiles([]);
-        }}
-      >
+      <Dialog open={isOpen} onOpenChange={handleModalClose}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>UPLOAD FILES</DialogTitle>
@@ -54,13 +66,13 @@ const UploadFiles = () => {
                   className="hidden"
                   multiple
                   onChange={(e) => {
-                    setFiles([...e.target.files]);
+                    setFiles(e.target.files ? Array.from(e.target.files) : []);
                   }}
                 />
               </div>
             </div>
             <div className="flex-1">
-              {files == null || files.length == 0 ? (
+              {files.length == 0 ? (
                 <div className="flex h-full items-center justify-center">
                   <p className="text-center">
                     Select files to <br />
@@ -71,7 +83,13 @@ const UploadFiles = () => {
                 <ScrollArea className="h-full">
                   <div className="space-y-2">
                     {files.map((file, index) => (
-                      <UploadState file={file} key={index} />
+                      <UploadState
+                        file={file}
+                        key={index}
+                        onSuccess={() =>
+                          setCompletedUploads((prev) => prev + 1)
+                        }
+                      />
                     ))}
                   </div>
                 </ScrollArea>

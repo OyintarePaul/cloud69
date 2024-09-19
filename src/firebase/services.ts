@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { auth, db, storage } from "./init";
 
-import { File as FileType, Folder } from "@/types";
+import { FileType, Folder } from "@/types";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { randomID } from "@/lib/utils";
 
