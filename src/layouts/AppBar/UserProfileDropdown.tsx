@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
+import { logOut } from "@/firebase/auth";
 
 const UserProfileDropdown = () => {
   return (
@@ -19,7 +20,7 @@ const UserProfileDropdown = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log Out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logOut()}>Log Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

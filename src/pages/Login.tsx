@@ -11,21 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { logIn } from "@/firebase/auth";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const navigate = useNavigate();
   const { isPending, isError, mutate } = useMutation({
-    mutationFn: () => {
-      return logIn(emailRef?.current.value!, passwordRef.current.value!);
+    mutationFn: ({ email, password }: { email: string; password: string }) => {
+      return logIn(email, password);
     },
-    onSuccess: (data) => {
-      console.log(data);
-      navigate("/dashboard/overview", {
+    onSuccess: () => {
+      navigate("/", {
         replace: true,
       });
     },
@@ -34,8 +30,14 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate();
+    console.log(e.currentTarget);
+    const formData = new FormData(e.target as HTMLFormElement);
+    mutate({
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    });
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <Card>
@@ -50,21 +52,21 @@ const Login = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
-              id="username"
+              id="email"
+              name="email"
               type="text"
-              placeholder="Your username"
+              placeholder="Your email"
               required
-              ref={emailRef}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required ref={passwordRef} />
+            <Input id="password" name="password" type="password" required />
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col">
           <Button className="w-full transition-colors" disabled={isPending}>
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -72,6 +74,9 @@ const Login = () => {
               "Log in"
             )}
           </Button>
+          <p className="mt-2">
+            New user? <Link to="/sign-up">Register now</Link>
+          </p>
         </CardFooter>
       </Card>
     </form>

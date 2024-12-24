@@ -4,27 +4,27 @@ import { cn } from "@/lib/utils";
 const items = [
   {
     label: "Overview",
-    path: "/dashboard/overview",
+    path: "/",
     icon: <LayoutDashboard className="size-4" />,
   },
   {
     label: "My Cloud",
-    path: "/dashboard/cloud/root",
+    path: "/cloud/root",
     icon: <Cloudy className="size-4" />,
   },
   {
     label: "Favourites",
-    path: "/dashboard/favourites",
+    path: "/favourites",
     icon: <Star className="size-4" />,
   },
   {
     label: "Trash",
-    path: "/dashboard/trash",
+    path: "/trash",
     icon: <Trash2 className="size-4" />,
   },
   {
     label: "Settings",
-    path: "/dashboard/settings",
+    path: "/settings",
     icon: <Settings className="size-4" />,
   },
 ];

@@ -11,22 +11,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/firebase/auth";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { FirebaseError } from "firebase/app";
 
 const Signup = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const navigate = useNavigate();
   const { isPending, isError, mutate, error } = useMutation({
-    mutationFn: () => {
-      return signUp(emailRef.current.value, passwordRef.current.value);
+    mutationFn: ({ email, password }: { email: string; password: string }) => {
+      return signUp(email, password);
     },
     onSuccess: (data) => {
       console.log(data);
-      navigate("/dashboard/overview", {
+      navigate("/", {
         replace: true,
       });
     },
@@ -38,7 +35,11 @@ const Signup = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate();
+    const formData = new FormData(e.target as HTMLFormElement);
+    mutate({
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    });
   };
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -54,18 +55,12 @@ const Signup = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              placeholder="Your username"
-              required
-              ref={emailRef}
-            />
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" placeholder="Your email" required />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required ref={passwordRef} />
+            <Input id="password" type="password" required />
           </div>
         </CardContent>
         <CardFooter>

@@ -1,11 +1,12 @@
-import { FieldValue } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export type Resource = {
-  id?: string;
+  id: string;
   name: string;
   parent: string;
   user: string;
-  createdAt: FieldValue;
+  createdAt: Timestamp;
+  trash: boolean;
 };
 
 export type Folder = {
@@ -17,4 +18,5 @@ export type FileType = {
   path: string;
   size: number;
   mimeType: string;
+  favourite: boolean;
 } & Resource;

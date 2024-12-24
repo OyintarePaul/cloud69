@@ -36,6 +36,8 @@ export const useUpload = (
       user: auth.currentUser?.uid as string,
       type: "file",
       createdAt: serverTimestamp(),
+      trash: false,
+      favourite: false,
     })
       .then((snapshot) => {
         if (onSuccess) onSuccess(snapshot);

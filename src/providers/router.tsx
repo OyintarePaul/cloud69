@@ -3,32 +3,28 @@ import Auth from "@/layouts/Auth";
 import Dashboard from "@/layouts/Dashboard";
 import Favourites from "@/pages/Favourites";
 import Trash from "@/pages/Trash";
-import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Cloud from "@/pages/Cloud";
 import Overview from "@/pages/Overview";
 import Signup from "@/pages/Signup";
+import Settings from "@/pages/Settings";
 
 import { createBrowserRouter } from "react-router-dom";
-import Settings from "@/pages/Settings";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-
-  {
-    path: "/dashboard",
     element: (
       <SignedIn>
         <Dashboard />
       </SignedIn>
     ),
     children: [
-      { path: "cloud/:id", element: <Cloud /> },
       {
-        path: "overview",
+        path: "cloud/:id",
+        element: <Cloud />,
+      },
+      {
+        path: "/",
         element: <Overview />,
       },
       {
@@ -43,7 +39,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/auth",
     element: <Auth />,
     children: [
       {

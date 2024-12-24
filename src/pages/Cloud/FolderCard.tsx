@@ -7,18 +7,25 @@ import {
 import { Folder } from "@/types";
 import { FolderClosed } from "lucide-react";
 import { Link } from "react-router-dom";
+import FolderOptions from "./FolderOptions";
+import FolderContentCount from "./FolderContentCount";
 
 type IProps = {
   folder: Folder;
 };
 const FolderCard = ({ folder }: IProps) => {
   return (
-    <Link to={`/dashboard/cloud/${folder.id}`}>
+    <Link to={`/cloud/${folder.id}`}>
       <Card>
         <CardHeader>
-          <FolderClosed />
+          <div className="flex justify-between">
+            <FolderClosed />
+            <FolderOptions id={folder.id} />
+          </div>
           <CardTitle>{folder.name}</CardTitle>
-          <CardDescription>3 files</CardDescription>
+          <CardDescription>
+            <FolderContentCount folderID={folder.id} />
+          </CardDescription>
         </CardHeader>
       </Card>
     </Link>

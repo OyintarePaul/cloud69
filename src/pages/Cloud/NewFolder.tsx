@@ -18,8 +18,10 @@ import { useParams } from "react-router-dom";
 const NewFolder = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
+
   const [name, setName] = useState("New Folder");
   const [isOpen, setIsOpen] = useState(false);
+
   const { isPending, mutate: create } = useMutation({
     mutationFn: () => createFolder(name, id!),
     onSuccess: () => {
