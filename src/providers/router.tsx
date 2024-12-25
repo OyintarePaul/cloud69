@@ -9,48 +9,60 @@ import Overview from "@/pages/Overview";
 import Signup from "@/pages/Signup";
 import Settings from "@/pages/Settings";
 
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      element: (
+        <SignedIn>
+          <Dashboard />
+        </SignedIn>
+      ),
+      children: [
+        {
+          path: "cloud/:id",
+          element: <Cloud />,
+        },
+        {
+          path: "/",
+          element: <Overview />,
+        },
+        {
+          path: "favourites",
+          element: <Favourites />,
+        },
+        { path: "trash", element: <Trash /> },
+        {
+          path: "settings",
+          element: <Settings />,
+        },
+      ],
+    },
+    {
+      element: <Auth />,
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "sign-up",
+          element: <Signup />,
+        },
+      ],
+    },
+  ],
   {
-    element: (
-      <SignedIn>
-        <Dashboard />
-      </SignedIn>
-    ),
-    children: [
-      {
-        path: "cloud/:id",
-        element: <Cloud />,
-      },
-      {
-        path: "/",
-        element: <Overview />,
-      },
-      {
-        path: "favourites",
-        element: <Favourites />,
-      },
-      { path: "trash", element: <Trash /> },
-      {
-        path: "settings",
-        element: <Settings />,
-      },
-    ],
-  },
-  {
-    element: <Auth />,
-    children: [
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "sign-up",
-        element: <Signup />,
-      },
-    ],
-  },
-]);
+    future: {
+      v7_relativeSplatPath: true,
+      v7_startTransition: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    },
+  }
+);
 
 export default router;

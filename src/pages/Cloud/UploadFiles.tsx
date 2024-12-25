@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import UploadState from "./UploadState";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 const UploadFiles = () => {
   const [files, setFiles] = useState<File[]>([]);

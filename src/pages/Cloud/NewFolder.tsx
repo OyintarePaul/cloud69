@@ -13,7 +13,7 @@ import { createFolder } from "@/firebase/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 const NewFolder = () => {
   const { id } = useParams();

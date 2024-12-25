@@ -3,7 +3,7 @@ import { auth } from "@/firebase/init";
 import { DocumentReference, serverTimestamp } from "firebase/firestore";
 import { TaskState, UploadTask } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 type UploadOptions = {
   onSuccess?: (snapshot: DocumentReference) => void;

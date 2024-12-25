@@ -19,7 +19,6 @@ const FolderOptions = ({ id }: { id: string }) => {
         <EllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>Properties</DropdownMenuItem>
         <DropdownMenuItem>
           <MoveToTrash id={id} closeDropdown={closeDropdown} />
         </DropdownMenuItem>

@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const BreadCrumb = () => {
   return (

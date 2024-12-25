@@ -1,6 +1,6 @@
 import { getChildren } from "@/firebase/services";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import FolderCard from "./FolderCard";
 import { Loader2 } from "lucide-react";
 import { FileType, Folder } from "@/types";

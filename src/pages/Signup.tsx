@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
 import { FirebaseError } from "firebase/app";
 

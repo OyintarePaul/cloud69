@@ -1,5 +1,5 @@
 import { useAuth } from "@/providers/auth";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
 const SignedIn = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading, error } = useAuth();

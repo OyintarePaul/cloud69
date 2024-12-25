@@ -13,6 +13,10 @@ import {
   formatFileSize,
   getFileExtension,
 } from "@/lib/utils";
+import FolderOptions from "./FolderOptions";
+import { Button } from "@/components/ui/button";
+import FilePreview from "@/components/FilePreview";
+import { useState } from "react";
 
 const FileList = ({ files }: { files: FileType[] }) => {
   return (
@@ -25,23 +29,12 @@ const FileList = ({ files }: { files: FileType[] }) => {
             <TableHead>Name</TableHead>
             <TableHead>Size</TableHead>
             <TableHead>Uploaded At</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {files?.map((file) => (
-            <TableRow key={file.id}>
-              <TableCell>
-                <img
-                  src={getIconSrc(getFileExtension(file.name!))}
-                  className="size-8"
-                />
-              </TableCell>
-              <TableCell>{file.name}</TableCell>
-              <TableCell>{formatFileSize(file.size)}</TableCell>
-              <TableCell>
-                {convertTimestamp(file.createdAt).toDateString()}
-              </TableCell>
-            </TableRow>
+            <FileRow file={file} key={file.id} />
           ))}
         </TableBody>
       </Table>
@@ -49,3 +42,34 @@ const FileList = ({ files }: { files: FileType[] }) => {
   );
 };
 export default FileList;
+
+const FileRow = ({ file }: { file: FileType }) => {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  return (
+    <>
+      <TableRow key={file.id}>
+        <TableCell>
+          <img
+            src={getIconSrc(getFileExtension(file.name) || "")}
+            className="size-8"
+          />
+        </TableCell>
+        <TableCell onClick={() => setIsPreviewOpen(true)}>
+          {file.name}
+        </TableCell>
+        <TableCell>{formatFileSize(file.size)}</TableCell>
+        <TableCell>{convertTimestamp(file.createdAt).toDateString()}</TableCell>
+        <TableCell>
+          <FolderOptions id={file.id} />
+        </TableCell>
+      </TableRow>
+      {isPreviewOpen && (
+        <FilePreview
+          isOpen={isPreviewOpen}
+          file={file}
+          close={() => setIsPreviewOpen(false)}
+        />
+      )}
+    </>
+  );
+};

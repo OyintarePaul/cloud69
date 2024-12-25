@@ -14,7 +14,7 @@ const FileCard = ({ file }: IProps) => {
         <p className="font-semibold line-clamp-1">{file.name}</p>
         <p className="text-muted-foreground">{file.size}</p>
         <img
-          src={getIconSrc(getFileExtension(file.name))}
+          src={getIconSrc(getFileExtension(file.name) || "")}
           className="size-10 max-w-full"
         />
       </CardHeader>

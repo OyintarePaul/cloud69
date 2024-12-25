@@ -11,7 +11,7 @@ import {
 import { auth, db, storage } from "./init";
 
 import { FileType, Folder } from "@/types";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { randomID } from "@/lib/utils";
 
 export const createFolder = async (name: string, parent: string) => {
@@ -59,6 +59,7 @@ export const getChildren = async (parentID?: string) => {
       createdAt: data.createdAt,
       mimeType: data.mimeType,
       size: data.size,
+      path: data.path,
     };
   });
   return resources;
@@ -81,4 +82,11 @@ export const moveToTrash = async (resourceID: string) => {
 export const getFolderContentCount = async (folderID: string) => {
   const resources = await getChildren(folderID);
   return resources.length;
+};
+
+export const getFileURL = async (path: string) => {
+  const storageRef = ref(storage, path);
+  const url = await getDownloadURL(storageRef);
+  console.log(url);
+  return url;
 };

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/card";
 import { Folder } from "@/types";
 import { FolderClosed } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import FolderOptions from "./FolderOptions";
 import FolderContentCount from "./FolderContentCount";
 

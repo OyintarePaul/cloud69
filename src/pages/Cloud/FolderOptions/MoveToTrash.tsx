@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { moveToTrash } from "@/firebase/services";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 const MoveToTrash = ({
   id,
@@ -49,7 +49,7 @@ const MoveToTrash = ({
           <DialogHeader>
             <DialogTitle>Move to trash</DialogTitle>
             <DialogDescription>
-              Are you sure you want to move this folder to trash?
+              Move this item to trash. This can't be undone.
             </DialogDescription>
           </DialogHeader>
 

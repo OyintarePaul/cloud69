@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import BreadCrumb from "./BreadCrumb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 const Navigation = () => {
   const navigate = useNavigate();
   return (
