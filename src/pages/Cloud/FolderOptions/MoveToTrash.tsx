@@ -48,9 +48,7 @@ const MoveToTrash = ({
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Move to trash</DialogTitle>
-            <DialogDescription>
-              Move this item to trash. This can't be undone.
-            </DialogDescription>
+            <DialogDescription>Move this item to trash.</DialogDescription>
           </DialogHeader>
 
           <DialogFooter>

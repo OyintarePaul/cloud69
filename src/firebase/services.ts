@@ -5,8 +5,10 @@ import {
   getDocs,
   query,
   serverTimestamp,
-  setDoc,
+  updateDoc,
   where,
+  getCountFromServer,
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, db, storage } from "./init";
 
@@ -60,6 +62,7 @@ export const getChildren = async (parentID?: string) => {
       mimeType: data.mimeType,
       size: data.size,
       path: data.path,
+      favourite: data.favourite,
     };
   });
   return resources;
@@ -67,21 +70,49 @@ export const getChildren = async (parentID?: string) => {
 
 export const moveToTrash = async (resourceID: string) => {
   const docRef = doc(db, "resources", resourceID);
-  await setDoc(
-    docRef,
-    {
-      trash: true,
-    },
-    {
-      merge: true,
-    }
-  );
+  await updateDoc(docRef, {
+    trash: true,
+    trashedAt: serverTimestamp(),
+  });
+  return;
+};
+
+export const restoreFromTrash = async (resourceID: string) => {
+  const docRef = doc(db, "resources", resourceID);
+  await updateDoc(docRef, {
+    trash: false,
+    trashedAt: null,
+  });
+  return;
+};
+
+export const deletePermanently = async (resourceID: string) => {
+  const docRef = doc(db, "resources", resourceID);
+  await deleteDoc(docRef);
+  return;
+};
+
+export const toggleFavourites = async (
+  resourceID: string,
+  favourite: boolean
+) => {
+  const docRef = doc(db, "resources", resourceID);
+  await updateDoc(docRef, {
+    favourite,
+  });
   return;
 };
 
 export const getFolderContentCount = async (folderID: string) => {
-  const resources = await getChildren(folderID);
-  return resources.length;
+  const snapshot = await getCountFromServer(
+    query(
+      collection(db, "resources"),
+      where("parent", "==", folderID),
+      where("user", "==", auth.currentUser?.uid),
+      where("trash", "==", false)
+    )
+  );
+  return snapshot.data().count;
 };
 
 export const getFileURL = async (path: string) => {
@@ -89,4 +120,29 @@ export const getFileURL = async (path: string) => {
   const url = await getDownloadURL(storageRef);
   console.log(url);
   return url;
+};
+
+export const getTrash = async () => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, "resources"),
+      where("user", "==", auth.currentUser?.uid),
+      where("trash", "==", true)
+    )
+  );
+  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name,
+      type: data.type,
+      parent: data.parent,
+      user: data.user,
+      createdAt: data.createdAt,
+      mimeType: data.mimeType,
+      size: data.size,
+      path: data.path,
+    };
+  });
+  return resources;
 };

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getFileURL } from "@/firebase/services";
 import { getFileExtension } from "@/lib/utils";
 import { useEffect } from "react";
+import { X } from "lucide-react";
 
 const FilePreview = ({
   isOpen,
@@ -39,18 +40,23 @@ const FilePreview = ({
   }, [isError, error]);
   return (
     <ReactModal isOpen={isOpen}>
-      <Button
-        size="icon"
-        variant="destructive"
-        onClick={close}
-        className="absolute right-4 top-4 z-50"
-      >
-        x
-      </Button>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <div className="w-full h-full relative">{previewContent}</div>
+        <div className="w-full h-full space-y-4">
+          <div className="flex justify-between items-center">
+            <p className="font-bold">{file.name}</p>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={close}
+              className="text-destructive"
+            >
+              <X className="size-4" />
+            </Button>
+          </div>
+          {previewContent}
+        </div>
       )}
     </ReactModal>
   );

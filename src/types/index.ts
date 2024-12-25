@@ -7,6 +7,7 @@ export type Resource = {
   user: string;
   createdAt: Timestamp;
   trash: boolean;
+  trashedAt: Timestamp;
 };
 
 export type Folder = {

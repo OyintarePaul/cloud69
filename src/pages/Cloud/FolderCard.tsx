@@ -20,7 +20,7 @@ const FolderCard = ({ folder }: IProps) => {
         <CardHeader>
           <div className="flex justify-between">
             <FolderClosed />
-            <FolderOptions id={folder.id} />
+            <FolderOptions resource={folder} />
           </div>
           <CardTitle>{folder.name}</CardTitle>
           <CardDescription>

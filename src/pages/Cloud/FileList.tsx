@@ -60,7 +60,7 @@ const FileRow = ({ file }: { file: FileType }) => {
         <TableCell>{formatFileSize(file.size)}</TableCell>
         <TableCell>{convertTimestamp(file.createdAt).toDateString()}</TableCell>
         <TableCell>
-          <FolderOptions id={file.id} />
+          <FolderOptions resource={file} />
         </TableCell>
       </TableRow>
       {isPreviewOpen && (
