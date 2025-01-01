@@ -1,3 +1,4 @@
+import { FileType, Folder } from "@/types";
 import {
   Table,
   TableHeader,
@@ -6,17 +7,18 @@ import {
   TableCell,
   TableHead,
 } from "@/components/ui/table";
-import { FileType, Folder } from "@/types";
-
 import { getIconSrc } from "@/lib/resource-icons";
-import { FolderClosed } from "lucide-react";
-import DeletePermanently from "./DeletePermanently";
-import RestoreFromTrash from "./RestoreFromTrash";
+import FolderOptions from "../Cloud/FolderOptions";
 
-const TrashList = ({ resources }: { resources: FileType[] | Folder[] }) => {
+const FavouritesList = ({
+  resources,
+}: {
+  resources: FileType[] | Folder[];
+}) => {
+  if (resources.length == 0) return <p>Your favourite list is empty. </p>;
   return (
     <div className="space-y-4 px-4">
-      <h2 className="font-bold text-2xl mt-4">Trash</h2>
+      <h2 className="font-bold text-2xl mt-4">Favourites</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -29,20 +31,15 @@ const TrashList = ({ resources }: { resources: FileType[] | Folder[] }) => {
           {resources.map((resource) => (
             <TableRow key={resource.id}>
               <TableCell>
-                {resource.type == "file" ? (
-                  <img
-                    src={getIconSrc(resource.mimeType || "")}
-                    className="size-8"
-                  />
-                ) : (
-                  <FolderClosed className="size-8" />
-                )}
+                <img
+                  src={getIconSrc(resource.mimeType || "")}
+                  className="size-8"
+                />
               </TableCell>
               <TableCell>{resource.name}</TableCell>
               <TableCell>
                 <div className="flex gap-4 items-center">
-                  <RestoreFromTrash resourceID={resource.id} />
-                  <DeletePermanently resourceID={resource.id} />
+                  <FolderOptions resource={resource} />
                 </div>
               </TableCell>
             </TableRow>
@@ -52,4 +49,4 @@ const TrashList = ({ resources }: { resources: FileType[] | Folder[] }) => {
     </div>
   );
 };
-export default TrashList;
+export default FavouritesList;

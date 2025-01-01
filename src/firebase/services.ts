@@ -9,6 +9,11 @@ import {
   where,
   getCountFromServer,
   deleteDoc,
+  or,
+  QueryFieldFilterConstraint,
+  and,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { auth, db, storage } from "./init";
 
@@ -142,6 +147,79 @@ export const getTrash = async () => {
       mimeType: data.mimeType,
       size: data.size,
       path: data.path,
+    };
+  });
+  return resources;
+};
+
+export const getFavourites = async () => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, "resources"),
+      where("user", "==", auth.currentUser?.uid),
+      where("favourite", "==", true),
+      where("trash", "==", false)
+    )
+  );
+  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name,
+      type: data.type,
+      parent: data.parent,
+      user: data.user,
+      createdAt: data.createdAt,
+      mimeType: data.mimeType,
+      size: data.size,
+      path: data.path,
+      favourite: data.favourite,
+    };
+  });
+  return resources;
+};
+
+export const getFileCategoryCount = async (category: string[]) => {
+  const filters: QueryFieldFilterConstraint[] = [];
+  category.forEach((cat) => {
+    filters.push(where("mimeType", "==", cat));
+  });
+  const q = query(
+    collection(db, "resources"),
+    and(
+      where("user", "==", auth.currentUser?.uid),
+      where("trash", "==", false),
+      or(...filters)
+    )
+  );
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
+};
+
+export const getRecentFiles = async () => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, "resources"),
+      where("user", "==", auth.currentUser?.uid),
+      where("type", "==", "file"),
+      orderBy("createdAt", "desc"),
+      limit(5)
+    )
+  );
+
+  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name,
+      type: data.type,
+      parent: data.parent,
+      user: data.user,
+      createdAt: data.createdAt,
+      mimeType: data.mimeType,
+      size: data.size,
+      path: data.path,
+      favourite: data.favourite,
     };
   });
   return resources;

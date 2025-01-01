@@ -49,10 +49,7 @@ const FileRow = ({ file }: { file: FileType }) => {
     <>
       <TableRow key={file.id}>
         <TableCell>
-          <img
-            src={getIconSrc(getFileExtension(file.name) || "")}
-            className="size-8"
-          />
+          <img src={getIconSrc(file.mimeType || "")} className="size-8" />
         </TableCell>
         <TableCell onClick={() => setIsPreviewOpen(true)}>
           {file.name}

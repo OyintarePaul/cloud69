@@ -31,6 +31,9 @@ const MoveToTrash = ({
       queryClient.invalidateQueries({
         queryKey: ["resources", parentID],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["favourites"],
+      });
       setIsOpen(false);
       closeDropdown();
     },
