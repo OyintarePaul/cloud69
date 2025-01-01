@@ -37,7 +37,7 @@ const categories = [
 
 const CategoryCards = () => {
   return (
-    <ul className="grid grid-cols-3 gap-6">
+    <ul className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
       {categories.map(({ id, bg, icon, label, category }) => (
         <li key={id}>
           <Card className={cn(bg)}>

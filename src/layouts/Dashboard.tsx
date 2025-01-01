@@ -4,7 +4,7 @@ import AppBar from "./AppBar";
 const Dashboard = () => {
   return (
     <div className="flex h-screen">
-      <div className="flex-[0.3] border-r border-r-grey-500 h-full">
+      <div className="md:flex-[0.25] max-w-56 hidden md:block border-r border-r-grey-500 h-full">
         <SideBar />
       </div>
       <div className="flex-1 h-full">

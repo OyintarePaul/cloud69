@@ -1,22 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
 import Analytics from "./Analytics";
 import CategoryCards from "./CategoryCards";
 import RecentFiles from "./RecentFiles";
 import WelcomeCard from "./WelcomeCard";
 
 const Overview = () => {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["overview"],
-    queryFn: () => {},
-  });
-
   return (
     <>
       <div className="lg:flex">
         <div className="flex-1 p-4 space-y-8">
-          <section>
+          {/* <section>
             <WelcomeCard />
-          </section>
+          </section> */}
           <section>
             <CategoryCards />
           </section>

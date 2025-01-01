@@ -14,6 +14,7 @@ import {
   and,
   orderBy,
   limit,
+  getDoc,
 } from "firebase/firestore";
 import { auth, db, storage } from "./init";
 
@@ -223,4 +224,11 @@ export const getRecentFiles = async () => {
     };
   });
   return resources;
+};
+
+export const getFolderName = async (folderID: string | undefined) => {
+  if (!folderID) return "No name";
+  if (folderID == "root") return "Root";
+  const snapshot = await getDoc(doc(db, "resources", folderID));
+  return snapshot.data()?.name;
 };

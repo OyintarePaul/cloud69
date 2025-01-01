@@ -8,13 +8,9 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { getIconSrc } from "@/lib/resource-icons";
-import {
-  convertTimestamp,
-  formatFileSize,
-  getFileExtension,
-} from "@/lib/utils";
+import { convertTimestamp, formatFileSize } from "@/lib/utils";
 import FolderOptions from "./FolderOptions";
-import { Button } from "@/components/ui/button";
+
 import FilePreview from "@/components/FilePreview";
 import { useState } from "react";
 
@@ -22,13 +18,14 @@ const FileList = ({ files }: { files: FileType[] }) => {
   return (
     <>
       <h2 className="font-semibold text-muted-foreground">Files</h2>
-      <Table>
+
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead></TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Size</TableHead>
-            <TableHead>Uploaded At</TableHead>
+            <TableHead className="hidden md:block">Uploaded At</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
@@ -52,10 +49,12 @@ const FileRow = ({ file }: { file: FileType }) => {
           <img src={getIconSrc(file.mimeType || "")} className="size-8" />
         </TableCell>
         <TableCell onClick={() => setIsPreviewOpen(true)}>
-          {file.name}
+          {file.name.substring(0, 20)}
         </TableCell>
         <TableCell>{formatFileSize(file.size)}</TableCell>
-        <TableCell>{convertTimestamp(file.createdAt).toDateString()}</TableCell>
+        <TableCell className="hidden md:block">
+          {convertTimestamp(file.createdAt).toDateString()}
+        </TableCell>
         <TableCell>
           <FolderOptions resource={file} />
         </TableCell>

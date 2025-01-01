@@ -31,7 +31,7 @@ const Resources = () => {
     <div className="px-2 space-y-8">
       <section className="space-y-2">
         <h2 className="font-semibold text-muted-foreground">Folders</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {folders?.map((folder, index) => (
             <FolderCard folder={folder as Folder} key={index} />
           ))}

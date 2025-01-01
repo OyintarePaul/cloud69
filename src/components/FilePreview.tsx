@@ -30,19 +30,26 @@ const FilePreview = ({
   let previewContent;
   if (["jpg", "png", "jpeg"].includes(getFileExtension(file.name) || ""))
     previewContent = (
-      <img src={fileURL} className="w-full object-contain rounded-2xl" />
+      <img
+        src={fileURL}
+        className="w-full h-full object-contain object-center rounded-2xl"
+      />
     );
-  if (getFileExtension(file.name) == "pdf")
+  else if (getFileExtension(file.name) == "pdf")
     previewContent = <iframe src={fileURL} className="w-full h-full" />;
-
+  else
+    previewContent =
+      "Now preview available for this file type. Cloud69 is in beta and we are working towards supporting more features";
   useEffect(() => {
     if (isError) console.log(error);
   }, [isError, error]);
   return (
     <ReactModal
       isOpen={isOpen}
-      className="absolute top-10 left-52 right-52 bottom-10 overflow-hidden bg-background p-4 rounded-3xl"
+      className="absolute inset-4 lg:inset-10 overflow-hidden bg-background p-4 rounded-3xl"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black/40"
+      shouldCloseOnOverlayClick
+      onRequestClose={() => close()}
     >
       <div className="w-full h-full space-y-4 flex flex-col">
         <div className="flex justify-between items-center">
