@@ -1,4 +1,5 @@
 import Actions from "./Actions";
+import FolderName from "./FolderName";
 import Navigation from "./Navigation";
 
 const Header = () => {
@@ -8,7 +9,7 @@ const Header = () => {
         <Navigation />
       </div>
       <div className="flex justify-between items-center">
-        <h1 className="font-bold text-xl p-2">Root</h1>
+        <FolderName />
         <Actions />
       </div>
     </div>
