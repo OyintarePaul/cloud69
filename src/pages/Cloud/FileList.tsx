@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { getIconSrc } from "@/lib/resource-icons";
 import { convertTimestamp, formatFileSize } from "@/lib/utils";
-import FolderOptions from "./FolderOptions";
+import FolderOptions from "../../components/FolderOptions";
 
 import FilePreview from "@/components/FilePreview";
 import { useState } from "react";

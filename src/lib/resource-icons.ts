@@ -1,4 +1,4 @@
-import ImageIcon from "@/assets/icons/image-icon.png";
+import ImageIcon from "@/assets/icons/image-icon.webp";
 import PDFIcon from "@/assets/icons/pdf.png";
 import MSWordIcon from "@/assets/icons/msword.png";
 import { image, msword, pdf } from "./mime-types";

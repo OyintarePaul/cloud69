@@ -21,3 +21,5 @@ export type FileType = {
   mimeType: string;
   favourite: boolean;
 } & Resource;
+
+export type FileOrFolder = Folder | FileType;

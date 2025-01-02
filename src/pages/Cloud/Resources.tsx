@@ -4,8 +4,8 @@ import { useParams } from "react-router";
 import FolderCard from "./FolderCard";
 import { Loader2 } from "lucide-react";
 import { FileType, Folder } from "@/types";
-
-import FileList from "./FileList";
+import FileList, { FileRow } from "@/components/FileList";
+import FolderOptions from "../../components/FolderOptions";
 
 const Resources = () => {
   const { id } = useParams();
@@ -38,7 +38,21 @@ const Resources = () => {
         </div>
       </section>
       <section className="space-y-2">
-        <FileList files={files} />
+        <FileList
+          files={files}
+          headings={["", "Name", "Size", "Created At", "Actions"]}
+          renderItem={(file) => (
+            <FileRow file={file}>
+              <FileRow.Icon />
+              <FileRow.Name />
+              <FileRow.Size />
+              <FileRow.CreatedAt />
+              <FileRow.Actions>
+                <FolderOptions resource={file} />
+              </FileRow.Actions>
+            </FileRow>
+          )}
+        />
       </section>
     </div>
   );
