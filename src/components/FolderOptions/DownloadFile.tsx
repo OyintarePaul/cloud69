@@ -1,13 +1,13 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { getFileURL } from "@/firebase/services";
-import { FileType, Folder } from "@/types";
+import { FileType } from "@/types";
 import { Download } from "lucide-react";
 
 const DownloadFile = ({
   resource,
   closeDropdown,
 }: {
-  resource: FileType | Folder;
+  resource: FileType;
   closeDropdown: () => void;
 }) => {
   const handleDownload = async () => {
