@@ -1,6 +1,10 @@
 import { createFile, uploadFile } from "@/firebase/services";
 import { auth } from "@/firebase/init";
-import { DocumentReference, serverTimestamp } from "firebase/firestore";
+import {
+  DocumentReference,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { TaskState, UploadTask } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -35,9 +39,10 @@ export const useUpload = (
       mimeType: file.type,
       user: auth.currentUser?.uid as string,
       type: "file",
-      createdAt: serverTimestamp(),
+      createdAt: serverTimestamp() as Timestamp,
       trash: false,
       favourite: false,
+      trashedAt: null,
     })
       .then((snapshot) => {
         if (onSuccess) onSuccess(snapshot);
