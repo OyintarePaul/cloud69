@@ -5,7 +5,7 @@ const Search = () => {
     <Input
       type="search"
       placeholder="Search"
-      className="w-56 md:w-72 bg-muted"
+      className="w-full max-w-md bg-muted"
     />
   );
 };

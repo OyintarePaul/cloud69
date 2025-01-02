@@ -6,7 +6,7 @@ import MobileNav from "../MobileNav";
 const AppBar = () => {
   return (
     <div className="px-4 py-2 flex justify-between items-center border-b">
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center flex-1">
         <MobileNav />
         <Search />
       </div>

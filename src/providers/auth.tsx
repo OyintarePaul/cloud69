@@ -26,6 +26,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       },
       (error) => {
         setError(error);
+        setIsLoading(false);
       }
     );
   }, []);

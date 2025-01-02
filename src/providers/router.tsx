@@ -10,6 +10,7 @@ import Signup from "@/pages/Signup";
 import Settings from "@/pages/Settings";
 
 import { createBrowserRouter } from "react-router";
+import SignedOut from "@/components/auth/SignedOut";
 
 const router = createBrowserRouter(
   [
@@ -40,7 +41,11 @@ const router = createBrowserRouter(
       ],
     },
     {
-      element: <Auth />,
+      element: (
+        <SignedOut>
+          <Auth />,
+        </SignedOut>
+      ),
       children: [
         {
           path: "login",
