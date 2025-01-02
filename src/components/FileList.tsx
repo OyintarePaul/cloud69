@@ -1,4 +1,4 @@
-import { FileOrFolder, FileType } from "@/types";
+import { FileType } from "@/types";
 import {
   Table,
   TableHeader,
@@ -16,13 +16,12 @@ const fileContext = createContext({} as FileType);
 
 const FileList = ({
   files,
-
   renderItem,
   headings,
 }: {
-  files: FileOrFolder[];
+  files: FileType[];
 
-  renderItem: (item: FileOrFolder) => React.ReactNode;
+  renderItem: (item: FileType) => React.ReactNode;
   headings: string[];
 }) => {
   return (

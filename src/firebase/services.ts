@@ -15,10 +15,11 @@ import {
   orderBy,
   limit,
   getDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { auth, db, storage } from "./init";
 
-import { FileType, Folder } from "@/types";
+import { FileOrFolder, FileType, Folder } from "@/types";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { randomID } from "@/lib/utils";
 
@@ -28,8 +29,9 @@ export const createFolder = async (name: string, parent: string) => {
     user: auth.currentUser?.uid as string,
     parent,
     type: "folder",
-    createdAt: serverTimestamp(),
+    createdAt: serverTimestamp() as Timestamp,
     trash: false,
+    trashedAt: null,
   };
   const snapshot = await addDoc(collection(db, "resources"), payload);
   return snapshot;
@@ -56,7 +58,7 @@ export const getChildren = async (parentID?: string) => {
       where("trash", "==", false)
     )
   );
-  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+  const resources: FileOrFolder[] = snapshot.docs.map((doc) => {
     const data = doc.data();
     return {
       id: doc.id,
@@ -69,6 +71,8 @@ export const getChildren = async (parentID?: string) => {
       size: data.size,
       path: data.path,
       favourite: data.favourite,
+      trash: data.trash,
+      trashedAt: data.trashedAt,
     };
   });
   return resources;
@@ -136,7 +140,7 @@ export const getTrash = async () => {
       where("trash", "==", true)
     )
   );
-  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+  const resources: FileType[] = snapshot.docs.map((doc) => {
     const data = doc.data();
     return {
       id: doc.id,
@@ -148,6 +152,9 @@ export const getTrash = async () => {
       mimeType: data.mimeType,
       size: data.size,
       path: data.path,
+      trash: data.trash,
+      trashedAt: data.trashedAt,
+      favourite: data.favourite,
     };
   });
   return resources;
@@ -162,7 +169,7 @@ export const getFavourites = async () => {
       where("trash", "==", false)
     )
   );
-  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+  const resources: FileType[] = snapshot.docs.map((doc) => {
     const data = doc.data();
     return {
       id: doc.id,
@@ -175,6 +182,8 @@ export const getFavourites = async () => {
       size: data.size,
       path: data.path,
       favourite: data.favourite,
+      trash: data.trash,
+      trashedAt: data.trashedAt,
     };
   });
   return resources;
@@ -208,7 +217,7 @@ export const getRecentFiles = async () => {
     )
   );
 
-  const resources: FileType[] | Folder[] = snapshot.docs.map((doc) => {
+  const resources: FileType[] = snapshot.docs.map((doc) => {
     const data = doc.data();
     return {
       id: doc.id,
@@ -221,6 +230,8 @@ export const getRecentFiles = async () => {
       size: data.size,
       path: data.path,
       favourite: data.favourite,
+      trash: data.trash,
+      trashedAt: data.trashedAt,
     };
   });
   return resources;
