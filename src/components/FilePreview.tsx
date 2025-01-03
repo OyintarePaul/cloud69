@@ -46,7 +46,7 @@ const FilePreview = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      className="absolute inset-4 lg:inset-10 overflow-hidden bg-background p-4 rounded-3xl"
+      className="absolute inset-4 lg:inset-10 overflow-hidden bg-background p-4 rounded-xl md:rounded-3xl"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black/40"
       shouldCloseOnOverlayClick
       onRequestClose={() => close()}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { AlignLeft } from "lucide-react";
 import NavItems from "./NavItems";
 
 const MobileNav = () => {
@@ -12,7 +12,7 @@ const MobileNav = () => {
           size="icon"
           variant="ghost"
         >
-          <Menu className="size-4" />
+          <AlignLeft className="size-6" />
         </Button>
       </SheetTrigger>
       <SheetContent className="px-2" side="left">

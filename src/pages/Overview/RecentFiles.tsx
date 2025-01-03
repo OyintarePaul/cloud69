@@ -22,11 +22,11 @@ const RecentFiles = () => {
         <h2 className="font-bold text-2xl mt-4">Recent Files</h2>
         <FileList
           files={resources}
-          headings={["", "Name", "Actions"]}
           renderItem={(file) => (
             <FileRow file={file}>
               <FileRow.Icon />
               <FileRow.Name />
+              <FileRow.Size />
               <FileRow.Actions>
                 <FolderOptions resource={file} />
               </FileRow.Actions>

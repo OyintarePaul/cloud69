@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="w-full">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -75,7 +75,10 @@ const Login = () => {
             )}
           </Button>
           <p className="mt-2">
-            New user? <Link to="/sign-up">Register now</Link>
+            New user?{" "}
+            <Link to="/sign-up" className="text-primary">
+              Register now
+            </Link>
           </p>
         </CardFooter>
       </Card>

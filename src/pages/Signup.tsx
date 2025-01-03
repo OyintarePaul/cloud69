@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/firebase/auth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
 import { FirebaseError } from "firebase/app";
 
@@ -63,7 +63,7 @@ const Signup = () => {
             <Input id="password" type="password" required />
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col">
           <Button className="w-full transition-colors" disabled={isPending}>
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -71,6 +71,12 @@ const Signup = () => {
               "Create an Account"
             )}
           </Button>
+          <p className="mt-2">
+            Already have an account?{" "}
+            <Link to="/login" className="text-primary">
+              Login instead
+            </Link>
+          </p>
         </CardFooter>
       </Card>
     </form>

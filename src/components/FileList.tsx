@@ -17,20 +17,18 @@ const fileContext = createContext({} as FileType);
 const FileList = ({
   files,
   renderItem,
-  headings,
 }: {
   files: FileType[];
-
   renderItem: (item: FileType) => React.ReactNode;
-  headings: string[];
 }) => {
   return (
     <>
       <Table className="w-full">
         <TableHeader>
-          {headings.map((heading: string, index: number) => (
-            <TableHead key={index}>{heading}</TableHead>
-          ))}
+          <TableHead></TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Size</TableHead>
+          <TableHead>Actions</TableHead>
         </TableHeader>
         <TableBody>{files?.map((item) => renderItem(item))}</TableBody>
       </Table>
@@ -67,7 +65,7 @@ const Name = ({ allowPreview = true }: { allowPreview?: boolean }) => {
         onClick={() => setIsOpen(true)}
         className={cn({ "cursor-pointer": allowPreview })}
       >
-        {file.name.substring(0, 20)}
+        {file.name.substring(0, 30)}
       </TableCell>
       {allowPreview && (
         <FilePreview

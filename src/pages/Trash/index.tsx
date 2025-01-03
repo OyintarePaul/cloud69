@@ -16,12 +16,6 @@ const Trash = () => {
     queryFn: () => getTrash(),
   });
 
-  useEffect(() => {
-    if (error) console.log(error);
-    if (resources) console.log(resources);
-    if (isLoading) console.log("Is loading");
-  }, [resources, error, isLoading]);
-
   if (error) return <div>Error: {error.message}</div>;
   if (isLoading) return <ActivityIndicator />;
   if (resources)
@@ -29,13 +23,13 @@ const Trash = () => {
       <div className="space-y-2 px-4">
         <h2 className="font-bold text-2xl mt-2">Trash</h2>
         <FileList
-          headings={["", "Name", "Actions"]}
           files={resources}
           renderItem={(file) => (
             <FileRow file={file}>
               <FileRow.Icon />
               <FileRow.Name allowPreview={false} />
               <FileRow.Actions>
+                <FileRow.Size />
                 <div className="flex gap-4 items-center">
                   <RestoreFromTrash resourceID={file.id} />
                   <DeletePermanently resourceID={file.id} />

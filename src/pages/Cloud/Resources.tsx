@@ -6,10 +6,15 @@ import { Loader2 } from "lucide-react";
 import { FileType, Folder } from "@/types";
 import FileList, { FileRow } from "@/components/FileList";
 import FolderOptions from "../../components/FolderOptions";
+import EmptyFolder from "@/components/EmptyFolder";
 
 const Resources = () => {
   const { id } = useParams();
-  const { data: resources, isLoading } = useQuery({
+  const {
+    data: resources,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["resources", id],
     queryFn: () => getChildren(id),
   });
@@ -19,8 +24,8 @@ const Resources = () => {
         <Loader2 className="animate-spin" />
       </div>
     );
-  if (resources && resources.length == 0)
-    return <div>This folder is empty. Create one now</div>;
+  if (error) return <p>Something went wrong</p>;
+  if (resources && resources.length == 0) return <EmptyFolder />;
 
   const folders = resources?.filter((resource) => resource.type == "folder");
   const files = resources?.filter(
@@ -40,13 +45,11 @@ const Resources = () => {
       <section className="space-y-2">
         <FileList
           files={files}
-          headings={["", "Name", "Size", "Created At", "Actions"]}
           renderItem={(file) => (
             <FileRow file={file}>
               <FileRow.Icon />
               <FileRow.Name />
               <FileRow.Size />
-              <FileRow.CreatedAt />
               <FileRow.Actions>
                 <FolderOptions resource={file} />
               </FileRow.Actions>
