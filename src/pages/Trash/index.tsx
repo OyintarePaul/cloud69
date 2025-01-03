@@ -4,7 +4,6 @@ import { getTrash } from "@/firebase/services";
 import { useQuery } from "@tanstack/react-query";
 import RestoreFromTrash from "./RestoreFromTrash";
 import DeletePermanently from "./DeletePermanently";
-import { useEffect } from "react";
 
 const Trash = () => {
   const {

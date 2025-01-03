@@ -21,7 +21,6 @@ const Favourites = () => {
         <h2 className="font-bold text-2xl mt-2">Favourites</h2>
         <FileList
           files={resources}
-          headings={["", "Name", "Actions"]}
           renderItem={(file) => (
             <FileRow file={file}>
               <FileRow.Icon />
