@@ -7,13 +7,7 @@ import {
   Query,
   resourcesCollectionID,
 } from "./init";
-
-// import * as mimeType from "@/lib/mime-types";
-// needed this line to get rid of some typescript errors.
-// it essential asserts the type of the import so typescript doesn't complain
-const mimeType = (await import("@/lib/mime-types")) as {
-  [name: string]: string[];
-};
+import * as mimeType from "@/lib/mime-types";
 
 export const createResource = async (payload: Resource) => {
   const result = await databases.createDocument(
@@ -133,11 +127,13 @@ export const getFolderName = async (folderID: string | undefined) => {
 export const getFileCategory = async (categoryKey: string) => {
   if (!categoryKey) return [];
 
+  // @ts-expect-error - mimeType is not properly typed
   if (!mimeType[categoryKey]) return [];
 
   const user = await account.get();
 
   const queries: string[] = [];
+  // @ts-expect-error - mimeType is not properly typed
   mimeType[categoryKey].forEach((type) => {
     queries.push(Query.equal("mimeType", type));
   });
