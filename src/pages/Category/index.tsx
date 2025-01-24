@@ -1,9 +1,10 @@
-import ActivityIndicator from "@/components/ActivityIndicator";
 import FileList, { FileRow } from "@/components/FileList";
 import { getFileCategory } from "@/appwrite/services";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import FolderOptions from "@/components/FolderOptions";
+import PageLoader from "@/components/PageLoader";
+import EmptyCategory from "@/components/EmptyCategory";
 
 const Category = () => {
   const { categoryName } = useParams();
@@ -13,10 +14,11 @@ const Category = () => {
     error,
   } = useQuery({
     queryKey: ["category", categoryName],
-    queryFn: () => getFileCategory(categoryName),
+    queryFn: () => getFileCategory(categoryName as string),
   });
   if (error) return <div>Error: {error.message}</div>;
-  if (isLoading) return <ActivityIndicator />;
+  if (isLoading) return <PageLoader />;
+  if (resources && resources.length == 0) return <EmptyCategory />;
   if (resources)
     return (
       <div className="space-y-2 px-4">

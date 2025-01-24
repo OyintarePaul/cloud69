@@ -43,12 +43,12 @@ export const useUpload = (
   const handleSuccess = (uploadTask: UploadTask) => {
     //creates file in firestore on success
     createResource({
-      parentID: parentID,
+      parentID: parentID as string,
       firebase_storage_path: uploadTask.snapshot.ref.fullPath,
       name: file.name,
       size: file.size,
       mimeType: file.type,
-      userID: user?.$id,
+      userID: user?.$id as string,
       type: "file",
     })
       .then(() => {

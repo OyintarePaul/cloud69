@@ -1,5 +1,5 @@
 import ReactModal from "react-modal";
-import { FileType } from "@/types";
+import { AppwriteDocument } from "@/types";
 import { Button } from "./ui/button";
 import ActivityIndicator from "./ActivityIndicator";
 import { useQuery } from "@tanstack/react-query";
@@ -12,13 +12,13 @@ const FilePreview = ({
   close,
   file,
 }: {
-  file: FileType;
+  file: AppwriteDocument;
   isOpen: boolean;
   close: () => void;
 }) => {
   const { data: fileURL, isLoading } = useQuery({
     queryKey: ["file", file.$id, "download-url"],
-    queryFn: () => getFileURL(file.firebase_storage_path),
+    queryFn: () => getFileURL(file.firebase_storage_path || ""),
   });
 
   let previewContent;

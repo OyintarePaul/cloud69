@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Film, Image, Music } from "lucide-react";
 import CategoryCount from "./CategoryCount";
-import { audio, document, image, video } from "@/lib/mime-types";
+import { audio, document, image } from "@/lib/mime-types";
 import { Link } from "react-router";
 
 type Category = {

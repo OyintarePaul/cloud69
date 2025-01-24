@@ -10,7 +10,7 @@ import {
 
 // import * as mimeType from "@/lib/mime-types";
 // needed this line to get rid of some typescript errors.
-// it essential asserts the type of the import so typescript dosen't complain
+// it essential asserts the type of the import so typescript doesn't complain
 const mimeType = (await import("@/lib/mime-types")) as {
   [name: string]: string[];
 };
@@ -149,7 +149,7 @@ export const getFileCategory = async (categoryKey: string) => {
     Query.or([...queries]),
   ]);
 
-  return result.documents;
+  return result.documents as AppwriteDocument[];
 };
 
 export const search = async (query: string) => {

@@ -1,4 +1,3 @@
-import ActivityIndicator from "@/components/ActivityIndicator";
 import { getFavourites } from "@/appwrite/services";
 import { useQuery } from "@tanstack/react-query";
 import FileList, { FileRow } from "@/components/FileList";
