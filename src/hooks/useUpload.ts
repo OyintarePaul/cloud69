@@ -1,16 +1,14 @@
-import { createFile, uploadFile } from "@/firebase/services";
-import { auth } from "@/firebase/init";
-import {
-  DocumentReference,
-  serverTimestamp,
-  Timestamp,
-} from "firebase/firestore";
+import { uploadFile } from "@/firebase/services";
+import { createResource } from "@/appwrite/services";
+
 import { TaskState, UploadTask } from "firebase/storage";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useParams } from "react-router";
 
+import { useAuth } from "@/providers/auth";
+
 type UploadOptions = {
-  onSuccess?: (snapshot: DocumentReference) => void;
+  onSuccess?: () => void;
   onError?: (e: Error) => void;
 };
 
@@ -21,74 +19,66 @@ export const useUpload = (
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<Error>();
   const [uploadState, setUploadState] = useState<TaskState>("paused");
-  const [uploadTask, setUploadTask] = useState<UploadTask | undefined>();
-  const { id } = useParams();
+  const { id: parentID } = useParams();
+  const { user } = useAuth();
+  const uploadTask = useRef<UploadTask>();
 
   const upload = useCallback(() => {
     setUploadState("running");
-    setUploadTask(uploadFile(file));
+    uploadTask.current = uploadFile(file);
+    uploadTask.current.on(
+      "state_changed",
+      (snapshot) => {
+        setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
+      },
+      (e) => {
+        setError(e);
+        setUploadState("error");
+        if (onError) onError(e);
+      },
+      () => handleSuccess(uploadTask.current!)
+    );
   }, [file]);
 
   const handleSuccess = (uploadTask: UploadTask) => {
     //creates file in firestore on success
-    createFile({
-      parent: id as string,
-      path: uploadTask.snapshot.ref.fullPath,
+    createResource({
+      parentID: parentID,
+      firebase_storage_path: uploadTask.snapshot.ref.fullPath,
       name: file.name,
       size: file.size,
       mimeType: file.type,
-      user: auth.currentUser?.uid as string,
+      userID: user?.$id,
       type: "file",
-      createdAt: serverTimestamp() as Timestamp,
-      trash: false,
-      favourite: false,
-      trashedAt: null,
     })
-      .then((snapshot) => {
-        if (onSuccess) onSuccess(snapshot);
+      .then(() => {
+        if (onSuccess) onSuccess();
         setUploadState("success");
       })
       .catch((e) => {
-        if (onError) onError(e);
-        setUploadState("error");
         setError(e);
+        setUploadState("error");
+        if (onError) onError(e);
       });
   };
 
-  useEffect(() => {
-    if (uploadTask) {
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
-        },
-        (error) => {
-          setError(error);
-          setUploadState("error");
-          if (onError) onError(error);
-        },
-        () => handleSuccess(uploadTask)
-      );
-    }
-  }, [uploadTask]);
-
   const pause = () => {
     if (uploadTask && uploadState == "running") {
-      uploadTask.pause();
+      uploadTask.current?.pause();
       setUploadState("paused");
     }
   };
 
   const resume = () => {
     if (uploadTask && uploadState == "paused") {
-      uploadTask.resume();
+      uploadTask.current?.resume();
       setUploadState("running");
     }
   };
 
   const cancel = () => {
     if (uploadTask && (uploadState == "running" || uploadState == "paused")) {
-      uploadTask.cancel();
+      uploadTask.current?.cancel();
       setUploadState("canceled");
     }
   };

@@ -1,17 +1,8 @@
-import { useState } from "react";
-import { Loader2, Trash2 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { moveToTrash } from "@/firebase/services";
+import { moveToTrash } from "@/appwrite/services";
 import { useParams } from "react-router";
+import { Trash2 } from "lucide-react";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 const MoveToTrash = ({
   id,
@@ -20,10 +11,9 @@ const MoveToTrash = ({
   id: string;
   closeDropdown: () => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const { id: parentID } = useParams();
   const queryClient = useQueryClient();
-  const { isPending, mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: () => {
       return moveToTrash(id);
     },
@@ -32,9 +22,9 @@ const MoveToTrash = ({
         queryKey: ["resources", parentID],
       });
       queryClient.invalidateQueries({
-        queryKey: ["favourites"],
+        queryKey: ["recent"],
       });
-      setIsOpen(false);
+
       closeDropdown();
     },
   });
@@ -42,45 +32,16 @@ const MoveToTrash = ({
     mutate();
   };
 
-  const handleModalClose = () => {
-    setIsOpen(false);
-  };
   return (
-    <>
-      <Dialog open={isOpen} onOpenChange={handleModalClose}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Move to trash</DialogTitle>
-            <DialogDescription>Move this item to trash.</DialogDescription>
-          </DialogHeader>
-
-          <DialogFooter>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleMoveToTrash();
-              }}
-              variant="destructive"
-            >
-              {isPending ? <Loader2 className="animate-spin size-4" /> : "Yes"}
-            </Button>
-            <Button onClick={handleModalClose} variant="outline">
-              No
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <span
-        className="flex gap-2 items-center text-red-600"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen(true);
-        }}
-      >
-        <Trash2 className="size-4" />
-        Move to trash
-      </span>
-    </>
+    <DropdownMenuItem
+      className="flex gap-2 items-center text-red-600"
+      onClick={(e) => {
+        e.stopPropagation();
+        handleMoveToTrash();
+      }}
+    >
+      <Trash2 className="size-4" /> Move to trash
+    </DropdownMenuItem>
   );
 };
 export default MoveToTrash;

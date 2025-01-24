@@ -1,6 +1,6 @@
 import ActivityIndicator from "@/components/ActivityIndicator";
 import { Button } from "@/components/ui/button";
-import { deletePermanently } from "@/firebase/services";
+import { deletePermanently } from "@/appwrite/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import {

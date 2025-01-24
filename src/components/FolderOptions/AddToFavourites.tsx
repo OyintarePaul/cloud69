@@ -1,5 +1,5 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { toggleFavourites } from "@/firebase/services";
+import { toggleFavourites } from "@/appwrite/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import { useParams } from "react-router";
@@ -16,7 +16,7 @@ const AddToFavourites = ({
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: () => {
-      return toggleFavourites(resourceID, !favourite);
+      return toggleFavourites(resourceID, favourite);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -1,4 +1,4 @@
-import { getFileCategoryCount } from "@/firebase/services";
+import { getFileCategoryCount } from "@/appwrite/services";
 import { useQuery } from "@tanstack/react-query";
 
 const CategoryCount = ({

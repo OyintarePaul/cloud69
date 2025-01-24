@@ -1,6 +1,35 @@
 import { clsx, type ClassValue } from "clsx";
 import { Timestamp } from "firebase/firestore";
+import { Cloudy, LayoutDashboard, Settings, Star, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+
+export const navItems = [
+  {
+    label: "Overview",
+    path: "/",
+    icon: <LayoutDashboard className="size-4" />,
+  },
+  {
+    label: "My Cloud",
+    path: "/cloud/root",
+    icon: <Cloudy className="size-4" />,
+  },
+  {
+    label: "Favourites",
+    path: "/favourites",
+    icon: <Star className="size-4" />,
+  },
+  {
+    label: "Trash",
+    path: "/trash",
+    icon: <Trash2 className="size-4" />,
+  },
+  {
+    label: "Settings",
+    path: "/settings",
+    icon: <Settings className="size-4" />,
+  },
+];
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -5,7 +5,6 @@ import ActivityIndicator from "./ActivityIndicator";
 import { useQuery } from "@tanstack/react-query";
 import { getFileURL } from "@/firebase/services";
 import { getFileExtension } from "@/lib/utils";
-import { useEffect } from "react";
 import { X } from "lucide-react";
 
 const FilePreview = ({
@@ -17,14 +16,9 @@ const FilePreview = ({
   isOpen: boolean;
   close: () => void;
 }) => {
-  const {
-    data: fileURL,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["file", file.id, "download-url"],
-    queryFn: () => getFileURL(file.path),
+  const { data: fileURL, isLoading } = useQuery({
+    queryKey: ["file", file.$id, "download-url"],
+    queryFn: () => getFileURL(file.firebase_storage_path),
   });
 
   let previewContent;
@@ -32,7 +26,7 @@ const FilePreview = ({
     previewContent = (
       <img
         src={fileURL}
-        className="w-full h-full object-contain object-center rounded-2xl"
+        className="w-full object-contain object-center rounded-2xl"
       />
     );
   else if (getFileExtension(file.name) == "pdf")
@@ -40,18 +34,16 @@ const FilePreview = ({
   else
     previewContent =
       "Now preview available for this file type. Cloud69 is in beta and we are working towards supporting more features";
-  useEffect(() => {
-    if (isError) console.log(error);
-  }, [isError, error]);
+
   return (
     <ReactModal
       isOpen={isOpen}
-      className="absolute inset-4 lg:inset-10 overflow-hidden bg-background p-4 rounded-xl md:rounded-3xl"
+      className="absolute inset-2 lg:inset-4 overflow-hidden bg-background p-4 rounded-xl md:rounded-3xl"
       overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black/40"
       shouldCloseOnOverlayClick
       onRequestClose={() => close()}
     >
-      <div className="w-full h-full space-y-4 flex flex-col">
+      <div className="w-full h-full space-y-2 flex flex-col">
         <div className="flex justify-between items-center">
           <p className="font-bold">{file.name}</p>
           <Button

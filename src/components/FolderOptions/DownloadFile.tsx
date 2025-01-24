@@ -11,13 +11,13 @@ const DownloadFile = ({
   closeDropdown: () => void;
 }) => {
   const handleDownload = async () => {
-    const url = await getFileURL(resource.path);
+    const url = await getFileURL(resource.firebase_storage_path);
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.target = "_blank";
-    anchor.download = resource.name;
+    anchor.download = resource.name || "";
     anchor.click();
-    anchor.type = resource.mimeType;
+    anchor.type = resource.mimeType || "";
     closeDropdown();
   };
   return (

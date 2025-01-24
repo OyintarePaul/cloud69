@@ -10,25 +10,24 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "@/firebase/auth";
 import { Link, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
-import { FirebaseError } from "firebase/app";
+import { useAuth } from "@/providers/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { isPending, isError, mutate, error } = useMutation({
+  const { createUser } = useAuth();
+  const { isPending, mutate, error } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
-      return signUp(email, password);
+      return createUser(email, password);
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       navigate("/", {
         replace: true,
       });
     },
-    onError: (e: FirebaseError) => {
-      console.log(e);
+    onError: () => {
+      console.log(error);
     },
     retry: 0,
   });
@@ -36,31 +35,34 @@ const Signup = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
+
     mutate({
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     });
   };
+
   return (
     <form onSubmit={handleSubmit} className="w-full">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>
-            Create a new account below.
-            {isError && (
-              <span className="block text-red-500">{error.code}</span>
-            )}
-          </CardDescription>
+          <CardDescription>Create a new account below.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="Your email" required />
+            <Input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Your email"
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <Input id="password" type="password" name="password" required />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col">

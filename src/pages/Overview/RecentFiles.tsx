@@ -1,5 +1,5 @@
 import ActivityIndicator from "@/components/ActivityIndicator";
-import { getRecentFiles } from "@/firebase/services";
+import { getRecentFiles } from "@/appwrite/services";
 import { useQuery } from "@tanstack/react-query";
 import FolderOptions from "../../components/FolderOptions";
 import FileList, { FileRow } from "@/components/FileList";
@@ -15,7 +15,7 @@ const RecentFiles = () => {
   });
   if (error) return <div>Error: {error.message}</div>;
   if (isLoading) return <ActivityIndicator />;
-  if (resources?.length == 0) return <p>Your favourite list is empty. </p>;
+  if (resources?.length == 0) return <p>No recent files </p>;
   if (resources)
     return (
       <div className="space-y-4 px-4">
@@ -27,6 +27,7 @@ const RecentFiles = () => {
               <FileRow.Icon />
               <FileRow.Name />
               <FileRow.Size />
+              <FileRow.CreatedAt />
               <FileRow.Actions>
                 <FolderOptions resource={file} />
               </FileRow.Actions>

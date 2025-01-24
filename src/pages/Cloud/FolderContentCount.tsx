@@ -1,4 +1,4 @@
-import { getFolderContentCount } from "@/firebase/services";
+import { getFolderContentCount } from "@/appwrite/services";
 import { useQuery } from "@tanstack/react-query";
 
 const FolderContentCount = ({ folderID }: { folderID: string }) => {

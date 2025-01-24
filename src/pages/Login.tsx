@@ -10,12 +10,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { logIn } from "@/firebase/auth";
 import { useNavigate, Link } from "react-router";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/providers/auth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { logIn } = useAuth();
   const { isPending, isError, mutate } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
       return logIn(email, password);
@@ -30,8 +31,9 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e.currentTarget);
+
     const formData = new FormData(e.target as HTMLFormElement);
+
     mutate({
       email: formData.get("email") as string,
       password: formData.get("password") as string,

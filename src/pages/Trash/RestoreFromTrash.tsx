@@ -1,6 +1,6 @@
 import ActivityIndicator from "@/components/ActivityIndicator";
 import { Button } from "@/components/ui/button";
-import { restoreFromTrash } from "@/firebase/services";
+import { restoreFromTrash } from "@/appwrite/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Undo } from "lucide-react";
 

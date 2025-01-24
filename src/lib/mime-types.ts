@@ -60,3 +60,5 @@ export const excel = [
   "application/vnd.ms-excel",
   "xlsapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ];
+
+export const document = [...msword, ...pdf, ...excel, ...powerpoint];

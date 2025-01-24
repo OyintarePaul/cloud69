@@ -1,25 +1,15 @@
-import { Timestamp } from "firebase/firestore";
+import { Models } from "appwrite";
 
 export type Resource = {
-  id: string;
   name: string;
-  parent: string;
-  user: string;
-  createdAt: Timestamp;
-  trash: boolean;
-  trashedAt: Timestamp | null;
+  parentID: string;
+  userID: string;
+  trash?: boolean;
+  type: "file" | "folder";
+  size?: number;
+  mimeType?: string;
+  favourite?: boolean;
+  firebase_storage_path?: string;
 };
 
-export type Folder = {
-  type: "folder";
-} & Resource;
-
-export type FileType = {
-  type: "file";
-  path: string;
-  size: number;
-  mimeType: string;
-  favourite: boolean;
-} & Resource;
-
-export type FileOrFolder = Folder | FileType;
+export type AppwriteDocument = Models.Document & Resource;

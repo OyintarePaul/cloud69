@@ -9,23 +9,31 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createFolder } from "@/firebase/services";
+import { createResource } from "@/appwrite/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router";
+import { useAuth } from "@/providers/auth";
 
 const NewFolder = () => {
-  const { id } = useParams();
+  const { id: parentID } = useParams() as { id: string };
+  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   const [name, setName] = useState("New Folder");
   const [isOpen, setIsOpen] = useState(false);
 
   const { isPending, mutate: create } = useMutation({
-    mutationFn: () => createFolder(name, id!),
+    mutationFn: () =>
+      createResource({
+        name,
+        type: "folder",
+        parentID,
+        userID: user?.$id as string,
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["resources", id] });
+      queryClient.invalidateQueries({ queryKey: ["resources", parentID] });
       handleModalClose();
     },
   });

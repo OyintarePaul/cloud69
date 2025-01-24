@@ -8,10 +8,10 @@ import {
 import { EllipsisVertical } from "lucide-react";
 import MoveToTrash from "./MoveToTrash";
 import AddToFavourites from "./AddToFavourites";
-import { FileType, Folder } from "@/types";
+import { FileOrFolder } from "@/types";
 import DownloadFile from "./DownloadFile";
 
-const FolderOptions = ({ resource }: { resource: FileType | Folder }) => {
+const FolderOptions = ({ resource }: { resource: FileOrFolder }) => {
   const [open, setOpen] = useState(false);
   const closeDropdown = () => {
     setOpen(false);
@@ -22,10 +22,11 @@ const FolderOptions = ({ resource }: { resource: FileType | Folder }) => {
       <DropdownMenuTrigger>
         <EllipsisVertical />
       </DropdownMenuTrigger>
+
       <DropdownMenuContent>
         {resource.type == "file" && (
           <AddToFavourites
-            resourceID={resource.id}
+            resourceID={resource.$id}
             closeDropdown={closeDropdown}
             favourite={resource.favourite}
           />
@@ -34,9 +35,7 @@ const FolderOptions = ({ resource }: { resource: FileType | Folder }) => {
           <DownloadFile resource={resource} closeDropdown={closeDropdown} />
         )}
 
-        <DropdownMenuItem>
-          <MoveToTrash id={resource.id} closeDropdown={closeDropdown} />
-        </DropdownMenuItem>
+        <MoveToTrash id={resource.$id} closeDropdown={closeDropdown} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

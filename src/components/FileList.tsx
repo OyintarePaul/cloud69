@@ -1,38 +1,42 @@
-import { FileType } from "@/types";
-import {
-  Table,
-  TableHeader,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "./ui/table";
+import { AppwriteDocument } from "@/types";
+
 import { getIconSrc } from "@/lib/resource-icons";
-import { cn, convertTimestamp, formatFileSize } from "@/lib/utils";
+import { cn, formatFileSize } from "@/lib/utils";
 import { createContext, useContext, useState } from "react";
 import FilePreview from "./FilePreview";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 
-const fileContext = createContext({} as FileType);
+const fileContext = createContext({} as AppwriteDocument);
 
 const FileList = ({
   files,
   renderItem,
 }: {
-  files: FileType[];
-  renderItem: (item: FileType) => React.ReactNode;
+  files: AppwriteDocument[];
+  renderItem: (item: AppwriteDocument, index: number) => React.ReactNode;
 }) => {
   return (
-    <>
-      <Table className="w-full">
-        <TableHeader>
-          <TableHead></TableHead>
-          <TableHead>Name</TableHead>
+    <Table className="table-fixed w-full">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-8 md:w-10"></TableHead>
+          <TableHead className="w-[60%]">Name</TableHead>
           <TableHead>Size</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableHeader>
-        <TableBody>{files?.map((item) => renderItem(item))}</TableBody>
-      </Table>
-    </>
+          <TableHead className="hidden md:table-cell">Created At</TableHead>
+          <TableHead className="text-center">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {files?.map((item, index) => renderItem(item, index))}
+      </TableBody>
+    </Table>
   );
 };
 export default FileList;
@@ -41,7 +45,7 @@ export const FileRow = ({
   file,
   children,
 }: {
-  file: FileType;
+  file: AppwriteDocument;
   children: React.ReactNode;
 }) => {
   return (
@@ -53,21 +57,21 @@ export const FileRow = ({
 
 const Size = () => {
   const file = useContext(fileContext);
-  return <TableCell>{formatFileSize(file.size)}</TableCell>;
+  return <TableCell>{formatFileSize(file.size || 0)}</TableCell>;
 };
 
-const Name = ({ allowPreview = true }: { allowPreview?: boolean }) => {
+const Name = () => {
   const [isOpen, setIsOpen] = useState(false);
   const file = useContext(fileContext);
   return (
     <>
       <TableCell
         onClick={() => setIsOpen(true)}
-        className={cn({ "cursor-pointer": allowPreview })}
+        className={cn({ "cursor-pointer": !file.trash })}
       >
-        {file.name.substring(0, 30)}
+        {file.name}
       </TableCell>
-      {allowPreview && (
+      {!file.trash && (
         <FilePreview
           file={file}
           isOpen={isOpen}
@@ -81,8 +85,8 @@ const Name = ({ allowPreview = true }: { allowPreview?: boolean }) => {
 const CreatedAt = () => {
   const file = useContext(fileContext);
   return (
-    <TableCell className="hidden md:block">
-      {convertTimestamp(file.createdAt).toDateString()}
+    <TableCell className="hidden md:table-cell">
+      {file.$createdAt && new Date(file.$createdAt).toDateString()}
     </TableCell>
   );
 };
@@ -90,17 +94,17 @@ const CreatedAt = () => {
 const Icon = () => {
   const file = useContext(fileContext);
   return (
-    <TableCell className="w-10">
+    <TableCell>
       <img
         src={getIconSrc(file.mimeType || "")}
-        className="w-full object-cover"
+        className="w-full object-contain"
       />
     </TableCell>
   );
 };
 
 const Actions = ({ children }: { children: React.ReactNode }) => {
-  return <TableCell>{children}</TableCell>;
+  return <TableCell className="text-center">{children}</TableCell>;
 };
 
 FileRow.Size = Size;

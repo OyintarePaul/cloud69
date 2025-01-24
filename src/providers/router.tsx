@@ -11,6 +11,8 @@ import Settings from "@/pages/Settings";
 
 import { createBrowserRouter } from "react-router";
 import SignedOut from "@/components/auth/SignedOut";
+import Category from "@/pages/Category";
+import SearchResults from "@/pages/SearchResults";
 
 const router = createBrowserRouter(
   [
@@ -37,6 +39,14 @@ const router = createBrowserRouter(
         {
           path: "settings",
           element: <Settings />,
+        },
+        {
+          path: "category/:categoryName",
+          element: <Category />,
+        },
+        {
+          path: "search",
+          element: <SearchResults />,
         },
       ],
     },
