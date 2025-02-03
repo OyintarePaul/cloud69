@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { Link } from "react-router";
 
 const fileContext = createContext({} as AppwriteDocument);
 
@@ -65,18 +66,26 @@ const Name = () => {
   const file = useContext(fileContext);
   return (
     <>
-      <TableCell
-        onClick={() => setIsOpen(true)}
-        className={cn({ "cursor-pointer": !file.trash })}
-      >
-        {file.name}
-      </TableCell>
-      {!file.trash && (
-        <FilePreview
-          file={file}
-          isOpen={isOpen}
-          close={() => setIsOpen(false)}
-        />
+      {file.type == "folder" ? (
+        <TableCell>
+          <Link to={`/cloud/${file.$id}`}>{file.name}</Link>
+        </TableCell>
+      ) : (
+        <>
+          <TableCell
+            onClick={() => setIsOpen(true)}
+            className={cn({ "cursor-pointer": !file.trash })}
+          >
+            {file.name}
+          </TableCell>
+          {!file.trash && (
+            <FilePreview
+              file={file}
+              isOpen={isOpen}
+              close={() => setIsOpen(false)}
+            />
+          )}
+        </>
       )}
     </>
   );

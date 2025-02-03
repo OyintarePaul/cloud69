@@ -30,7 +30,7 @@ const FilePreview = ({
       shouldCloseOnOverlayClick
       onRequestClose={() => close()}
     >
-      <div className="w-full h-full space-y-2">
+      <div className="w-full h-full flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <p className="font-bold">{file.name}</p>
           <Button
