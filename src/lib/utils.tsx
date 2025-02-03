@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import { Timestamp } from "firebase/firestore";
-import { Cloudy, LayoutDashboard, Settings, Star, Trash2 } from "lucide-react";
+import { Cloudy, LayoutDashboard, Star, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
 export const navItems = [
@@ -24,11 +23,11 @@ export const navItems = [
     path: "/trash",
     icon: <Trash2 className="size-4" />,
   },
-  {
-    label: "Settings",
-    path: "/settings",
-    icon: <Settings className="size-4" />,
-  },
+  // {
+  //   label: "Settings",
+  //   path: "/settings",
+  //   icon: <Settings className="size-4" />,
+  // },
 ];
 
 export function cn(...inputs: ClassValue[]) {
@@ -46,8 +45,7 @@ export const formatFileSize = (bytes: number) => {
   if (bytes < Math.pow(1024, 2)) {
     return `${(bytes / Math.pow(1024, 1)).toFixed(1)}KB`;
   }
-};
-
-export const convertTimestamp = (timestamp: Timestamp) => {
-  return timestamp.toDate();
+  if (bytes < Math.pow(1024, 3)) {
+    return `${(bytes / Math.pow(1024, 2)).toFixed(1)}MB`;
+  }
 };

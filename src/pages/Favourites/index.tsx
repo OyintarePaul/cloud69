@@ -4,6 +4,8 @@ import FileList, { FileRow } from "@/components/FileList";
 import FolderOptions from "../../components/FolderOptions";
 import PageLoader from "@/components/PageLoader";
 
+import EmptyFavourites from "@/components/EmptyFavourites";
+
 const Favourites = () => {
   const {
     isLoading,
@@ -15,6 +17,7 @@ const Favourites = () => {
   });
   if (error) return <div>Error: {error.message}</div>;
   if (isLoading) return <PageLoader />;
+  if (resources && resources.length == 0) return <EmptyFavourites />;
   if (resources)
     return (
       <div className="space-y-2 px-4">

@@ -45,8 +45,15 @@ const UploadFiles = () => {
           <DialogHeader>
             <DialogTitle>UPLOAD FILES</DialogTitle>
           </DialogHeader>
-          <div className="flex gap-4 h-60">
-            <div className="flex-1 flex flex-col justify-center items-center gap-4 border-2 border-dashed">
+          <div className="flex gap-2 h-60">
+            <div
+              className={cn(
+                "flex flex-1 flex-col justify-center items-center gap-4 border-2 border-dashed",
+                {
+                  "hidden sm:flex": files.length > 0,
+                }
+              )}
+            >
               <Upload className="text-primary size-8" />
               <p>Drag and Drop files</p>
               <span>or</span>

@@ -4,8 +4,9 @@ import { Button } from "./ui/button";
 import ActivityIndicator from "./ActivityIndicator";
 import { useQuery } from "@tanstack/react-query";
 import { getFileURL } from "@/firebase/services";
-import { getFileExtension } from "@/lib/utils";
 import { X } from "lucide-react";
+import DownloadFile from "./DownloadFile";
+import { image, pdf } from "@/lib/mime-types";
 
 const FilePreview = ({
   isOpen,
@@ -21,20 +22,6 @@ const FilePreview = ({
     queryFn: () => getFileURL(file.firebase_storage_path || ""),
   });
 
-  let previewContent;
-  if (["jpg", "png", "jpeg"].includes(getFileExtension(file.name) || ""))
-    previewContent = (
-      <img
-        src={fileURL}
-        className="w-full object-contain object-center rounded-2xl"
-      />
-    );
-  else if (getFileExtension(file.name) == "pdf")
-    previewContent = <iframe src={fileURL} className="w-full h-full" />;
-  else
-    previewContent =
-      "Now preview available for this file type. Cloud69 is in beta and we are working towards supporting more features";
-
   return (
     <ReactModal
       isOpen={isOpen}
@@ -43,7 +30,7 @@ const FilePreview = ({
       shouldCloseOnOverlayClick
       onRequestClose={() => close()}
     >
-      <div className="w-full h-full space-y-2 flex flex-col">
+      <div className="w-full h-full space-y-2">
         <div className="flex justify-between items-center">
           <p className="font-bold">{file.name}</p>
           <Button
@@ -56,10 +43,28 @@ const FilePreview = ({
           </Button>
         </div>
         <div className="flex-1">
-          {isLoading ? <ActivityIndicator /> : previewContent}
+          {isLoading ? <ActivityIndicator /> : previewContent(file, fileURL)}
         </div>
       </div>
     </ReactModal>
   );
 };
 export default FilePreview;
+
+const previewContent = (file: AppwriteDocument, url: string | undefined) => {
+  const previewMap = new Map([
+    [
+      image,
+      <img
+        src={url}
+        className="w-full h-full object-contain object-center rounded-2xl"
+      />,
+    ],
+    [pdf, <iframe src={url} className="w-full h-full" />],
+  ]);
+
+  for (const [key, value] of previewMap) {
+    if (key.includes(file.mimeType || "")) return value;
+  }
+  return <DownloadFile resource={file} />;
+};

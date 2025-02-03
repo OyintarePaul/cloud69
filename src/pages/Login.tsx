@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router";
-import { Loader2 } from "lucide-react";
+
 import { useAuth } from "@/providers/auth";
+import LoadingBtn from "@/components/LoadingBtn";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -65,17 +66,23 @@ const Login = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required />
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Your password"
+              required
+            />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <Button className="w-full transition-colors" disabled={isPending}>
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              "Log in"
-            )}
-          </Button>
+          <LoadingBtn
+            className="w-full transition-colors"
+            disabled={isPending}
+            isLoading={isPending}
+          >
+            Log in
+          </LoadingBtn>
           <p className="mt-2">
             New user?{" "}
             <Link to="/sign-up" className="text-primary">

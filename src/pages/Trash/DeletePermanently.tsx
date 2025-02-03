@@ -13,11 +13,19 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-const DeletePermanently = ({ resourceID }: { resourceID: string }) => {
+const DeletePermanently = ({
+  resourceID,
+  path,
+  type,
+}: {
+  resourceID: string;
+  path: string;
+  type: string;
+}) => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const { isPending, mutate } = useMutation({
-    mutationFn: () => deletePermanently(resourceID),
+    mutationFn: () => deletePermanently(resourceID, path, type),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["trash"],

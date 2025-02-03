@@ -28,42 +28,26 @@ const useAuth = () => {
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+  const [error] = useState<unknown>(null);
 
   const createUser = async (email: string, password: string) => {
-    try {
-      await account.create(ID.unique(), email, password);
-      await logIn(email, password);
-    } catch (error) {
-      setError(error);
-      console.error("Login failed:", error);
-    }
+    await account.create(ID.unique(), email, password);
+    await logIn(email, password);
   };
 
   const logIn = async (email: string, password: string) => {
-    try {
-      await account.createEmailPasswordSession(email, password);
-      const user = await account.get();
-      setUser(user);
-    } catch (error) {
-      setError(error);
-      console.error("Login failed:", error);
-    }
+    await account.createEmailPasswordSession(email, password);
+    const user = await account.get();
+    setUser(user);
   };
+
   const logout = async () => {
-    try {
-      await account.deleteSessions();
-      setUser(null);
-    } catch (error) {
-      setError(error);
-      console.error("Logout failed:", error);
-      // Handle logout errors
-    }
+    await account.deleteSessions();
+    setUser(null);
   };
 
   useEffect(() => {
     const checkSession = async () => {
-      console.log("Checking session");
       try {
         const user = await account.get(); // Fetch user data
         setUser(user); // Set user data

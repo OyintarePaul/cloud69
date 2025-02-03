@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router";
-import { Loader2 } from "lucide-react";
+
 import { useAuth } from "@/providers/auth";
+import LoadingBtn from "@/components/LoadingBtn";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -62,17 +63,23 @@ const Signup = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" name="password" required />
+            <Input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <Button className="w-full transition-colors" disabled={isPending}>
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              "Create an Account"
-            )}
-          </Button>
+          <LoadingBtn
+            className="w-full transition-colors"
+            disabled={isPending}
+            isLoading={isPending}
+          >
+            Create an Account
+          </LoadingBtn>
           <p className="mt-2">
             Already have an account?{" "}
             <Link to="/login" className="text-primary">

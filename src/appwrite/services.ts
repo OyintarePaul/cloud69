@@ -8,6 +8,7 @@ import {
   resourcesCollectionID,
 } from "./init";
 import * as mimeType from "@/lib/mime-types";
+import { deleteFile } from "@/firebase/services";
 
 export const createResource = async (payload: Resource) => {
   const result = await databases.createDocument(
@@ -42,8 +43,13 @@ export const restoreFromTrash = async (resourceID: string) => {
   });
 };
 
-export const deletePermanently = async (resourceID: string) => {
+export const deletePermanently = async (
+  resourceID: string,
+  path: string,
+  type: string
+) => {
   await databases.deleteDocument(dbID, resourcesCollectionID, resourceID);
+  if (type == "file") await deleteFile(path);
 };
 
 export const toggleFavourites = async (
@@ -155,4 +161,16 @@ export const search = async (query: string) => {
     Query.equal("userID", user.$id),
   ]);
   return result.documents as AppwriteDocument[];
+};
+
+export const rename = async (resourceID: string, name: string) => {
+  const result = await databases.updateDocument(
+    dbID,
+    resourcesCollectionID,
+    resourceID,
+    {
+      name,
+    }
+  );
+  return result.name;
 };

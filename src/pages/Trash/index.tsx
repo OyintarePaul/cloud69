@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import RestoreFromTrash from "./RestoreFromTrash";
 import DeletePermanently from "./DeletePermanently";
 import PageLoader from "@/components/PageLoader";
+import EmptyTrash from "@/components/EmptyTrash";
 
 const Trash = () => {
   const {
@@ -17,6 +18,8 @@ const Trash = () => {
 
   if (error) return <div>Error: {error.message}</div>;
   if (isLoading) return <PageLoader />;
+  if (resources && resources.length == 0) return <EmptyTrash />;
+
   if (resources)
     return (
       <div className="space-y-2 px-4">
@@ -31,7 +34,11 @@ const Trash = () => {
               <FileRow.Actions>
                 <div className="flex gap-4 items-center">
                   <RestoreFromTrash resourceID={file.$id} />
-                  <DeletePermanently resourceID={file.$id} />
+                  <DeletePermanently
+                    resourceID={file.$id}
+                    path={file.firebase_storage_path || ""}
+                    type={file.type}
+                  />
                 </div>
               </FileRow.Actions>
             </FileRow>

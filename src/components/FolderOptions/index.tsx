@@ -7,7 +7,6 @@ import {
 import { EllipsisVertical } from "lucide-react";
 import MoveToTrash from "./MoveToTrash";
 import AddToFavourites from "./AddToFavourites";
-import DownloadFile from "./DownloadFile";
 import { AppwriteDocument } from "@/types";
 
 const FolderOptions = ({ resource }: { resource: AppwriteDocument }) => {
@@ -30,10 +29,12 @@ const FolderOptions = ({ resource }: { resource: AppwriteDocument }) => {
             favourite={resource.favourite as boolean}
           />
         )}
-        {resource.type == "file" && (
-          <DownloadFile resource={resource} closeDropdown={closeDropdown} />
-        )}
 
+        {/* <Rename
+          resourceID={resource.$id}
+          previousName={resource.name}
+          closeDropdown={closeDropdown}
+        /> */}
         <MoveToTrash id={resource.$id} closeDropdown={closeDropdown} />
       </DropdownMenuContent>
     </DropdownMenu>

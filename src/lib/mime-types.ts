@@ -55,6 +55,7 @@ export const archive = [
   "application/x-tar",
   "application/x-7z-compressed",
   "application/zip",
+  "application/x-zip-compressed",
 ];
 export const excel = [
   "application/vnd.ms-excel",
