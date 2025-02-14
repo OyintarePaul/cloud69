@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# Cloud69 - Your Simple Cloud Storage Solution
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cloud69 is a user-friendly cloud storage application built with React and Appwrite, designed to make file management a breeze.  Organize your files effortlessly by creating folders and uploading directly from your device. Access your data anytime, anywhere.
 
-Currently, two official plugins are available:
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e8a71991-645f-4614-946f-870094052309/deploy-status)](https://app.netlify.com/sites/cloud69online/deploys)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live Demo
 
-## Expanding the ESLint configuration
+Experience Cloud69 in action: [http://cloud69online.netlify.app](http://cloud69online.netlify.app)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+* **Intuitive Interface:**  A clean and simple design makes navigating and managing your files easy.
+* **Folder Organization:** Create folders to categorize and structure your files just like on your local machine.
+* **File Upload:**  Seamlessly upload files from your device to your cloud storage.
+* **Powered by Appwrite:** Leverages Appwrite for backend services, including database, storage, and authentication (future implementations).
+* **Built with React:**  A modern and performant frontend built using the popular React library.
+* **Responsive Design:** Access your files from any device, whether desktop, tablet, or mobile. (In progress)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Technologies Used
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+* **React:**  Frontend JavaScript library for building user interfaces.
+* **Appwrite:** Open-source backend-as-a-service platform.
+* **HTML5/CSS3:**  For structuring and styling the application.
+* **JavaScript:**  Core programming language for frontend logic.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Future Enhancements
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+* **User Authentication:** Secure your files with user accounts and login functionality.
+* **File Preview:** Preview various file types directly within the app.
+* **Search Functionality:** Quickly find your files using keywords.
+* **Improved Responsiveness:** Enhance the mobile experience with more refined responsive design.
