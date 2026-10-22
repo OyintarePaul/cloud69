@@ -1,5 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { safeNext } from "@/lib/validate";
 
 const PROTECTED_PREFIXES = ["/folder", "/trash"];
@@ -73,7 +73,19 @@ export async function proxy(request: NextRequest) {
         return redirect;
     }
 
-    return response;
+    // R19: signed-in users go straight to the app, unless they asked for the
+    // landing page explicitly (About Cloud69 links to /?landing=1).
+    if (
+        signedIn &&
+        pathname === "/" &&
+        request.nextUrl.searchParams.get("landing") !== "1"
+    ) {
+        const redirect = NextResponse.redirect(
+            new URL("/folder/root", getOrigin(request)),
+        );
+        response.cookies.getAll().forEach((c) => redirect.cookies.set(c));
+        return redirect;
+    }
 
     return response;
 }

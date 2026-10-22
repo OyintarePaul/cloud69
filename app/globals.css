@@ -145,3 +145,24 @@
 @utility shadow-hard {
     box-shadow: 4px 4px 0 0 var(--ink);
 }
+
+@utility btn-hard {
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 0 var(--ink);
+    transition:
+        transform 150ms ease-out,
+        box-shadow 150ms ease-out;
+
+    &:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 0 var(--ink);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &:active {
+            transform: none;
+        }
+    }
+}
