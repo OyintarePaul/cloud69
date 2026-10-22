@@ -8,8 +8,10 @@ import { safeNext } from "@/lib/validate";
 export async function signInWithGoogle(formData: FormData) {
   const next = safeNext(formData.get("next") as string | null);
   const h = await headers();
-  const origin = h.get("origin");
-  if (!origin) redirect("/login?error=origin");
+    const forwardedHost = h.get("x-forwarded-host") ?? h.get("host");
+    const proto = h.get("x-forwarded-proto") ?? "http";
+    if (!forwardedHost) redirect("/login?error=origin");
+    const origin = `${proto}://${forwardedHost}`;
 
   // Carry `next` in a short-lived cookie so redirectTo has no query string.
   const cookieStore = await cookies();
