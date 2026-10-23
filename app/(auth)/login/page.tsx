@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { signInWithGoogle } from "@/actions/auth";
 import { safeNext } from "@/lib/validate";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 export default function LoginPage({
     searchParams,
@@ -43,12 +44,9 @@ async function LoginForm({
             )}
             <form action={signInWithGoogle}>
                 <input type="hidden" name="next" value={safeNext(next)} />
-                <Button
-                    type="submit"
-                    className="w-full border-2 border-ink shadow-hard"
-                >
+                <SubmitButton className="btn-hard w-full">
                     Continue with Google
-                </Button>
+                </SubmitButton>
             </form>
         </>
     );

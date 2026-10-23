@@ -1,7 +1,8 @@
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { signInWithGoogle } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { getCurrentUser } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +22,9 @@ export async function HeroCta() {
 
     return (
         <form action={signInWithGoogle}>
-            <Button type="submit" size="lg" className="btn-hard">
+            <SubmitButton size="lg" className="btn-hard">
                 Continue with Google
-            </Button>
+            </SubmitButton>
         </form>
     );
 }

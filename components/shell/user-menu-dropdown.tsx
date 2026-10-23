@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTransition } from "react";
-import { Info, LogOut } from "lucide-react";
+import { Info, LoaderCircle, LogOut } from "lucide-react";
 import { signOut } from "@/actions/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -80,9 +80,15 @@ export function UserMenuDropdown({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     disabled={pending}
+                    closeOnClick={false}
                     onClick={() => startTransition(() => signOut())}
                 >
-                    <LogOut /> Sign out
+                    {pending ? (
+                        <LoaderCircle className="animate-spin motion-reduce:animate-pulse" />
+                    ) : (
+                        <LogOut />
+                    )}
+                    {pending ? "Signing out…" : "Sign out"}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
