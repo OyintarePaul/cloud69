@@ -42,6 +42,9 @@ function mapError(e: unknown): ActionFailure {
         return fail("PROFILE_MISSING");
     }
     if (msg.includes("PARENT_TRASHED")) return fail("PARENT_TRASHED");
+    if (msg.includes("INVALID_NAME")) return fail("VALIDATION");
+    if (msg.includes("UNAUTHORIZED")) return fail("UNAUTHORIZED");
+    if (msg.includes("INVALID_SIZE")) return fail("VALIDATION");
     if (msg.includes("NOT_FOUND")) return fail("NOT_FOUND");
     if (msg.includes("DUPLICATE_NAME") || pg.code === "23505") {
         return fail("DUPLICATE_NAME");
