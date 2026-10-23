@@ -1,8 +1,7 @@
 import { Suspense } from "react";
-import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { signOut } from "@/actions/auth";
-import { createClient } from "@/lib/supabase/server";
+import { Button } from "@/components/ui/button";
+import { requireUser } from "@/lib/auth";
 
 export default function FolderPage({
     params,
@@ -18,11 +17,7 @@ export default function FolderPage({
 
 async function FolderContent({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) redirect(`/login?next=/folder/${id}`);
+    const user = await requireUser(`/folder/${id}`);
 
     return (
         <main className="mx-auto max-w-xl space-y-4 p-10">

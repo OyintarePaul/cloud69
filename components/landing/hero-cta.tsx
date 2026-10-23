@@ -2,14 +2,11 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { signInWithGoogle } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 export async function HeroCta() {
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getCurrentUser();
 
     if (user) {
         return (
