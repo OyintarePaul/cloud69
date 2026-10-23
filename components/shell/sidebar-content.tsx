@@ -1,8 +1,9 @@
+import { Cloud } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Cloud } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SidebarNav } from "./sidebar-nav";
+import { UsageMeter } from "./usage-meter";
 
 export function SidebarContent() {
     return (
@@ -35,25 +36,8 @@ export function SidebarContent() {
                 </p>
             </div>
 
-            {/* Placeholder: UsageMeter gets real data in Phase 5 */}
-            <div className="space-y-2 rounded-xl border-2 border-ink bg-background p-3">
-                <div className="flex items-baseline justify-between text-xs">
-                    <span className="font-medium">Storage</span>
-                    <span className="font-mono text-muted-foreground">
-                        0 MB / 500 MB
-                    </span>
-                </div>
-                <div
-                    role="progressbar"
-                    aria-label="Storage used"
-                    aria-valuemin={0}
-                    aria-valuemax={500}
-                    aria-valuenow={0}
-                    className="h-2 overflow-hidden rounded-full border border-ink bg-muted"
-                >
-                    <div className="h-full w-0 bg-primary" />
-                </div>
-            </div>
+            {/* Placeholder values: real data arrives in Phase 5 */}
+            <UsageMeter usedBytes={0} quotaBytes={500 * 1024 * 1024} />
         </div>
     );
 }

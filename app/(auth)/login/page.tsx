@@ -1,30 +1,41 @@
 import { Suspense } from "react";
-import { Button } from "@/components/ui/button";
 import { signInWithGoogle } from "@/actions/auth";
-import { safeNext } from "@/lib/validate";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SubmitButton } from "@/components/ui/submit-button";
+import { safeNext } from "@/lib/validate";
+
+type LoginSearchParams = Promise<{ next?: string; error?: string }>;
 
 export default function LoginPage({
     searchParams,
 }: {
-    searchParams: Promise<{ next?: string; error?: string }>;
+    searchParams: LoginSearchParams;
 }) {
     return (
         <main className="flex min-h-screen items-center justify-center p-6">
-            <div className="w-full max-w-sm space-y-6 rounded-xl border-2 border-ink bg-card p-8 shadow-hard">
-                <h1 className="font-display text-[28px] font-bold">
-                    Sign in to Cloud69
-                </h1>
-                <Suspense
-                    fallback={
-                        <Button disabled className="w-full">
-                            Continue with Google
-                        </Button>
-                    }
-                >
-                    <LoginForm searchParams={searchParams} />
-                </Suspense>
-            </div>
+            <Card variant="hard" size="lg" className="w-full max-w-sm">
+                <CardHeader>
+                    <CardTitle
+                        role="heading"
+                        aria-level={1}
+                        className="text-[28px]"
+                    >
+                        Sign in to Cloud69
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <Suspense
+                        fallback={
+                            <Button disabled className="btn-hard w-full">
+                                Continue with Google
+                            </Button>
+                        }
+                    >
+                        <LoginForm searchParams={searchParams} />
+                    </Suspense>
+                </CardContent>
+            </Card>
         </main>
     );
 }
@@ -32,7 +43,7 @@ export default function LoginPage({
 async function LoginForm({
     searchParams,
 }: {
-    searchParams: Promise<{ next?: string; error?: string }>;
+    searchParams: LoginSearchParams;
 }) {
     const { next, error } = await searchParams;
     return (

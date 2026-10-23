@@ -4,6 +4,12 @@ import { Suspense } from "react";
 import { AppMock } from "@/components/landing/app-mock";
 import { HeroCta, HeroCtaFallback } from "@/components/landing/hero-cta";
 import { ThemeToggle } from "@/components/shell/theme-toggle";
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
 const REPO_URL = "https://github.com/OyintarePaul/cloud69";
 
@@ -64,20 +70,21 @@ export default function LandingPage() {
 
                 <section className="mx-auto grid w-full max-w-[1120px] gap-6 px-6 pb-20 md:grid-cols-3">
                     {FEATURES.map(({ icon: Icon, title, body }) => (
-                        <div
-                            key={title}
-                            className="space-y-3 rounded-xl border-2 border-ink bg-card p-6 shadow-hard"
-                        >
-                            <span className="flex size-10 items-center justify-center rounded-lg border-2 border-ink bg-muted">
-                                <Icon className="size-5" />
-                            </span>
-                            <h2 className="font-display text-xl font-bold">
-                                {title}
-                            </h2>
-                            <p className="text-sm text-muted-foreground">
-                                {body}
-                            </p>
-                        </div>
+                        <Card key={title} variant="hard" size="lg">
+                            <CardHeader>
+                                <span className="mb-2 flex size-10 items-center justify-center rounded-lg border-2 border-ink bg-muted">
+                                    <Icon className="size-5" />
+                                </span>
+                                <CardTitle
+                                    role="heading"
+                                    aria-level={2}
+                                    className="text-xl"
+                                >
+                                    {title}
+                                </CardTitle>
+                                <CardDescription>{body}</CardDescription>
+                            </CardHeader>
+                        </Card>
                     ))}
                 </section>
             </main>
