@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Breadcrumbs } from "@/components/browser/breadcrumbs";
 import { requireUser } from "@/lib/auth";
 import { getFolderContents } from "@/lib/data/browse";
 import { parseBrowseParams } from "@/lib/schemas/browse";
@@ -29,7 +30,7 @@ async function FolderContent({ params, searchParams }: Props) {
 
     return (
         <main className="space-y-4 p-6 font-mono text-sm">
-            <p>{["Home", ...crumbs.map((c) => c.name)].join(" / ")}</p>
+            <Breadcrumbs crumbs={crumbs} />
             <p>
                 {total} items · sort: {browse.sort} {browse.dir} · view:{" "}
                 {browse.view}
