@@ -1,12 +1,16 @@
+import { FolderOpenIcon } from "lucide-react";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/browser/breadcrumbs";
+import { EmptyState } from "@/components/browser/empty-state";
 import { FileGrid } from "@/components/browser/file-grid";
 import { FileList } from "@/components/browser/file-list";
+import { FolderSkeleton } from "@/components/browser/folder-skeleton";
 import { SortMenu } from "@/components/browser/sort-menu";
+import { TruncationNotice } from "@/components/browser/truncation-notice";
 import { requireUser } from "@/lib/auth";
-import { getFolderContents } from "@/lib/data/browse";
+import { getFolderContents, LIST_LIMIT } from "@/lib/data/browse";
 import {
     parseBrowseParams,
     parseViewMode,
@@ -22,7 +26,7 @@ type Props = {
 
 export default function FolderPage({ params, searchParams }: Props) {
     return (
-        <Suspense fallback={<p className="p-6">Loading…</p>}>
+        <Suspense fallback={<FolderSkeleton />}>
             <FolderContent params={params} searchParams={searchParams} />
         </Suspense>
     );
@@ -43,11 +47,8 @@ async function FolderContent({ params, searchParams }: Props) {
         view: parsed.view ?? savedView ?? "list",
     };
 
-    const { crumbs, folders, files, total } = await getFolderContents(
-        id,
-        user.id,
-        browse,
-    );
+    const { crumbs, folders, files, total, truncated } =
+        await getFolderContents(id, user.id, browse);
 
     return (
         <main className="space-y-4 p-6">
@@ -64,10 +65,14 @@ async function FolderContent({ params, searchParams }: Props) {
                 )}
             </div>
 
+            {truncated && <TruncationNotice limit={LIST_LIMIT} total={total} />}
+
             {total === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                    This folder is empty.
-                </p>
+                <EmptyState
+                    icon={FolderOpenIcon}
+                    title="This folder is empty"
+                    description="Files and folders you add will show up here."
+                />
             ) : browse.view === "grid" ? (
                 <FileGrid folders={folders} files={files} />
             ) : (

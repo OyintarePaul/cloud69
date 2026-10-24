@@ -11,7 +11,7 @@ import {
 } from "@/lib/schemas/browse";
 
 const ITEM_CLASSES =
-    "size-9 min-w-0 px-0 text-muted-foreground aria-pressed:bg-primary aria-pressed:text-primary-foreground";
+    "size-8 min-w-0 px-0 text-muted-foreground aria-pressed:bg-primary aria-pressed:text-primary-foreground";
 
 export function ViewToggle({ savedView }: { savedView?: ViewMode }) {
     const pathname = usePathname();

@@ -27,7 +27,7 @@ export function Topbar() {
 
             <div className="ml-auto flex items-center gap-2">
                 <Suspense
-                    fallback={<Skeleton className="h-9 w-[76px] rounded-lg" />}
+                    fallback={<Skeleton className="h-9 w-[70px] rounded-lg" />}
                 >
                     <ViewToggleSlot />
                 </Suspense>
