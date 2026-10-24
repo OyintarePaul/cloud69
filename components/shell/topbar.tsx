@@ -1,10 +1,11 @@
-import { Suspense } from "react";
 import { Search } from "lucide-react";
+import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MobileNav } from "./mobile-nav";
 import { SidebarContent } from "./sidebar-content";
 import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
+import { ViewToggleSlot } from "./view-toggle-slot";
 
 export function Topbar() {
     return (
@@ -25,6 +26,11 @@ export function Topbar() {
             </button>
 
             <div className="ml-auto flex items-center gap-2">
+                <Suspense
+                    fallback={<Skeleton className="h-9 w-[76px] rounded-lg" />}
+                >
+                    <ViewToggleSlot />
+                </Suspense>
                 <ThemeToggle />
                 <Suspense
                     fallback={<Skeleton className="size-9 rounded-full" />}

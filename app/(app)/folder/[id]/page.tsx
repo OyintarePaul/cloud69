@@ -1,10 +1,18 @@
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/browser/breadcrumbs";
+import { FileGrid } from "@/components/browser/file-grid";
 import { FileList } from "@/components/browser/file-list";
+import { SortMenu } from "@/components/browser/sort-menu";
 import { requireUser } from "@/lib/auth";
 import { getFolderContents } from "@/lib/data/browse";
-import { parseBrowseParams } from "@/lib/schemas/browse";
+import {
+    parseBrowseParams,
+    parseViewMode,
+    type ResolvedBrowseParams,
+    VIEW_COOKIE,
+} from "@/lib/schemas/browse";
 import { isFolderId } from "@/lib/schemas/ids";
 
 type Props = {
@@ -25,7 +33,16 @@ async function FolderContent({ params, searchParams }: Props) {
     if (!isFolderId(id)) notFound(); // R18: before any query
 
     const user = await requireUser(`/folder/${id}`);
-    const browse = parseBrowseParams(await searchParams);
+    const parsed = parseBrowseParams(await searchParams);
+
+    // View order: the URL wins, then the saved cookie, then "list".
+    const store = await cookies();
+    const savedView = parseViewMode(store.get(VIEW_COOKIE)?.value);
+    const browse: ResolvedBrowseParams = {
+        ...parsed,
+        view: parsed.view ?? savedView ?? "list",
+    };
+
     const { crumbs, folders, files, total } = await getFolderContents(
         id,
         user.id,
@@ -34,11 +51,25 @@ async function FolderContent({ params, searchParams }: Props) {
 
     return (
         <main className="space-y-4 p-6">
-            <Breadcrumbs crumbs={crumbs} />
+            <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                    <Breadcrumbs crumbs={crumbs} />
+                </div>
+                {browse.view === "grid" && total > 0 && (
+                    <SortMenu
+                        view={browse.view}
+                        sort={browse.sort}
+                        dir={browse.dir}
+                    />
+                )}
+            </div>
+
             {total === 0 ? (
                 <p className="text-sm text-muted-foreground">
                     This folder is empty.
                 </p>
+            ) : browse.view === "grid" ? (
+                <FileGrid folders={folders} files={files} />
             ) : (
                 <FileList folders={folders} files={files} {...browse} />
             )}

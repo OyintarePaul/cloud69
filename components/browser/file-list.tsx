@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/table";
 import { getFileKind } from "@/lib/file-types";
 import { formatBytes } from "@/lib/format";
-import type { BrowseParams, SortField } from "@/lib/schemas/browse";
+import type { ResolvedBrowseParams, SortField } from "@/lib/schemas/browse";
 import type { FileItem, FolderItem } from "@/lib/types";
 
 type Props = {
     folders: FolderItem[];
     files: FileItem[];
-} & BrowseParams;
+} & ResolvedBrowseParams;
 
 const COLUMNS: { field: SortField; label: string; className?: string }[] = [
     { field: "name", label: "Name" },
