@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/browser/breadcrumbs";
+import { FileList } from "@/components/browser/file-list";
 import { requireUser } from "@/lib/auth";
 import { getFolderContents } from "@/lib/data/browse";
 import { parseBrowseParams } from "@/lib/schemas/browse";
@@ -25,27 +26,22 @@ async function FolderContent({ params, searchParams }: Props) {
 
     const user = await requireUser(`/folder/${id}`);
     const browse = parseBrowseParams(await searchParams);
-    const { crumbs, folders, files, total, truncated } =
-        await getFolderContents(id, user.id, browse);
+    const { crumbs, folders, files, total } = await getFolderContents(
+        id,
+        user.id,
+        browse,
+    );
 
     return (
-        <main className="space-y-4 p-6 font-mono text-sm">
+        <main className="space-y-4 p-6">
             <Breadcrumbs crumbs={crumbs} />
-            <p>
-                {total} items · sort: {browse.sort} {browse.dir} · view:{" "}
-                {browse.view}
-                {truncated ? " · truncated" : ""}
-            </p>
-            <ul>
-                {folders.map((f) => (
-                    <li key={f.id}>[folder] {f.name}</li>
-                ))}
-                {files.map((f) => (
-                    <li key={f.id}>
-                        [file] {f.name} ({f.size_bytes} bytes)
-                    </li>
-                ))}
-            </ul>
+            {total === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                    This folder is empty.
+                </p>
+            ) : (
+                <FileList folders={folders} files={files} {...browse} />
+            )}
         </main>
     );
 }
